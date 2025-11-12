@@ -1,13 +1,31 @@
+// import createMiddleware from 'next-intl/middleware';
+// import { locales } from './config';
+
+// export default createMiddleware({
+//     locales,
+//     defaultLocale: 'en',
+// });
+
+// export const config = {
+//     matcher: ['/', '/(grc|en)/:path*'] 
+// };
+
+
+// middleware.js
 import createMiddleware from 'next-intl/middleware';
-import { locales } from './config';
+import { locales, defaultLocale } from './config';
 
 export default createMiddleware({
-    locales,
-    defaultLocale: 'en',
+  locales,
+  defaultLocale,
+  localePrefix: 'as-needed'
 });
 
 export const config = {
-    matcher: ['/', '/(grc|en)/:path*'] 
+  matcher: [
+    // Match all pathnames except for
+    // - … if they start with `/api`, `/_next` or `/_vercel`
+    // - … the ones containing a dot (e.g. `favicon.ico`)
+    '/((?!api|_next|_vercel|.*\\..*).*)'
+  ]
 };
-
-// Check

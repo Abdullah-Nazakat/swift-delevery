@@ -22,8 +22,13 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+   font-family: var(--font-poppins), sans-serif;
 }
+
+.code {
+  font-family: var(--font-geist-mono), monospace;
+}
+
 
 .image{
   /* background-image: url(../../public/swiftdeliver.jpg); */
