@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import Image from "next/image"; // Import Next.js Image
-import Banner from '../../../public/banner.png'; // Import your banner
+// import Banner from '../../../public/banner.png'; // Import your banner
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 
@@ -35,14 +35,14 @@ export default function RootLayout({ children }) {
       >
         <NextIntlClientProvider>
           {/* Banner Image */}
-          <div className="relative w-full h-64">
+          {/* <div className="relative w-full h-64">
             <Image
               src={Banner}
               alt="Banner"
               fill
               style={{ objectFit: "cover" }}
             />
-          </div>
+          </div> */}
 
           {/* Rest of the content */}
           {children}
