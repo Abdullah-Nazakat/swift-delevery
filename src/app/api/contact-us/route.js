@@ -108,21 +108,21 @@ export async function POST(request) {
       );
     }
     
-    // return NextResponse.json(
-    //   { error: 'An unexpected error occurred. Please try again.' },
-    //   { status: 500 }
-    // );
-     return NextResponse.json(
-    {
-      error: 'An unexpected error occurred. Please try again.',
-      details: JSON.stringify({
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-      }),
-    },
-    { status: 500 }
-  );
+    return NextResponse.json(
+      { error: error },
+      { status: 500 }
+    );
+  //    return NextResponse.json(
+  //   {
+  //     error: 'An unexpected error occurred. Please try again.',
+  //     details: JSON.stringify({
+  //       name: error.name,
+  //       message: error.message,
+  //       stack: error.stack,
+  //     }),
+  //   },
+  //   { status: 500 }
+  // );
   }
 }
 

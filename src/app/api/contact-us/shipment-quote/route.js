@@ -150,7 +150,7 @@ export async function POST(request) {
     }
     
     return NextResponse.json(
-      { error: 'An unexpected error occurred. Please try again.' },
+      { error:error },
       { status: 500 }
     );
   }
