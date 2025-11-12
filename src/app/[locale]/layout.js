@@ -1,10 +1,10 @@
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
-import Image from "next/image"; // Import Next.js Image
-// import Banner from '../../../public/banner.png'; // Import your banner
+import Image from "next/image";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
+import { useSearchParams } from "next/navigation"; // Next.js hook to read query params
+import Banner from "../../../public/banner.png"; // Your banner image
 
-// Existing fonts
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -15,7 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Add Poppins
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
@@ -28,23 +27,26 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  // Use Next.js hook to get URL search params
+  const searchParams = useSearchParams();
+  const showBanner = searchParams.get("banner") === "true"; // example: ?banner=true
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
         <NextIntlClientProvider>
-          {/* Banner Image */}
-          {/* <div className="relative w-full h-64">
-            <Image
-              src={Banner}
-              alt="Banner"
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </div> */}
-
-          {/* Rest of the content */}
+          {showBanner && (
+            <div className="w-full relative h-60 mb-4">
+              <Image
+                src={Banner}
+                alt="Banner"
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          )}
           {children}
         </NextIntlClientProvider>
       </body>
