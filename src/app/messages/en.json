@@ -1,0 +1,179 @@
+{
+  "HomePage": {
+    "HeroTitle": "Shipment Management and Product Deliveries",
+    "LearnAboutUs": "Learn About Us",
+    "OurServices": "Our Services",
+
+    "Service1Title": "We provide <orange>transportation</orange> from city to city",
+    "Service1Desc": "All necessary services for this type of transportation",
+
+    "Service2Title": "<orange>Door-to-Door</orange> deliveries of all products",
+    "Service2Desc": "Whatever your need, we cover immediate deliveries within cities",
+
+    "Service3Title": "Food & Beverage <orange>Delivery Services</orange>",
+    "Service3Desc": "We have a fleet of distributors in multiple cities in Greece for delivery services",
+
+    "Service4Title": "<orange>Delivery</orange> Management for Companies",
+    "Service4Desc": "We handle the entire management of deliveries of any type for your company",
+
+    "AboutSubtitle": "About Us",
+    "AboutTitle": "Modern & Reliable Company",
+    "AboutDescription": "Our company is the modern and reliable choice in the field of deliveries and shipments, offering complete solutions for every professional or personal need. With an emphasis on speed, safety, and impeccable professionalism, we ensure that every shipment arrives promptly and consistently at its destination. Utilizing advanced technologies, highly trained staff, and transparent procedures, we build relationships of trust with our customers and contribute dynamically to the smooth operation of businesses and the daily lives of individuals.",
+
+    "QuoteSectionTitle": "Request a Quote",
+    "QuoteSectionSubtitle": "For any of your needs",
+    "QuoteSectionDesc": "We’re here to provide reliable, fast, and efficient transportation services — customized to your needs.",
+
+    "Form": {
+      "FullName": "Full Name*",
+      "Phone": "Phone*",
+      "LoadType": "Load Type*",
+      "Departure": "Departure*",
+      "Surrender": "Delivery*",
+      "InternationalTrc": "International Transport",
+      "Height": "Height*",
+      "Width": "Width*",
+      "Shipment": "Shipment"
+    },
+
+    "CompanyStatistics": "Company Statistics",
+    "PartnershipsSpeak": "Our partnerships speak for us",
+    "Missions": "Missions",
+    "ProductDeliveries": "Product Deliveries",
+    "Management": "Management",
+    "ShippingContainers": "Shipping Containers"
+  },
+   "Footer": {
+    "LogoAlt": "Swift Deliver Logo",
+    "Jobs": "Jobs",
+    "ReadMore": "READ MORE",
+    "ContactUs": "Contact us",
+    "RequestQuote": "REQUEST A QUOTE",
+    "NeedHelp": "Do you need help?",
+    "CompanyName": "SWIFT DELIVERY SINGLE-PERSON PRIVATE LIMITED COMPANY",
+    "GEMINumber": "GEMI Number 185252101000",
+    "VATNumber": "VAT number 802916058",
+    "Copyright": "Copyright © 2025 Swiftdeliver. All Rights Reserved",
+    "BackToTop": "Back to top"
+  },
+  "Navbar": {
+    "LogoAlt": "Swift Deliver Logo",
+    "Home": "Home",
+    "about": "About",
+    "The Company": "The Company",
+    "Job Positions": "Job Positions",
+    "Services": "Services",
+    "Communication": "Communication",
+    "PhoneNumber": "693-182-8493",
+    "CallUs": "Call Us",
+    "ToggleMenu": "Open main menu"
+  },
+  
+  "AboutUs": {
+    "AboutSubtitle": "About Us",
+    "AboutTitle": "Modern & Reliable Company",
+    "AboutDescription": "Our company is the modern and reliable choice in the field of deliveries and shipments, offering complete solutions for every professional or personal need. With an emphasis on speed, safety, and impeccable professionalism, we ensure that every shipment arrives promptly and consistently at its destination. Utilizing advanced technologies, highly trained staff, and transparent procedures, we build relationships of trust with our customers and contribute dynamically to the smooth operation of businesses and the everyday lives of individuals.",
+    "Service1Desc": "Our mission is to provide fast, reliable, and safe deliveries, directly serving our customers’ needs and building relationships of trust with each shipment.",
+    "Service2Title": "History",
+    "Service2Desc": "Our story begins with the vision of offering reliable and quality delivery services, based on innovation, consistency, and respect for the customer. From day one until today, we have been constantly evolving, creating a network that guarantees safety, speed, and excellent service.",
+    "Service3Title": "Why Us",
+    "Service3Desc": "You choose us because we combine reliability, speed, and personal service in every mission, offering comprehensive solutions that truly meet your needs. We continuously invest in technology and human contact, so that every experience with us exceeds your expectations.",
+
+    "SectionLabel": "Company Statistics",
+    "SectionTitle": "A shipping and delivery company with a reliable track record",
+    "Stats": [
+      { "label": "Product Delivery" },
+      { "label": "World Wide Branch" },
+      { "label": "Modern Transport" },
+      { "label": "Award Winning" }
+    ],
+    "SkillsLabel": "Our Skills",
+    "SkillsTitle": "Our Professional Experience & Skills",
+    "Skill1Name": "Distributions",
+    "Skill2Name": "Transportation",
+    "Skill3Name": "Traditions",
+    "The Company": "The Company"
+},
+
+
+  "Career": {
+    "FullTime": "Full-time",
+    "PartTime": "Part-time",
+    "FoodDistributor": "Food Distributor",
+    "FoodDistributorDesc": "For all major cities in Greece",
+    "FleetDistributor": "Fleet Distributor",
+    "FleetDistributorDesc": "For Super Market distributions",
+    "FleetManager": "Fleet Manager",
+    "FleetManagerDesc": "Fleet Manager for Kos",
+
+     "SendCVTitle": "Send us your CV",
+    "SendCVDesc": "We are always looking for talent. Don’t wait for a job opening, send us your resume now.",
+    "ApplyNow": "APPLY NOW",
+    "PageTitle": "Career"
+    
+  },
+
+    "Services": {
+    "ExploreOurAgency": "Explore Our Agency",
+    "ServicesSectionTitle": "We are one of the most reliable and flexible companies in Greece.",
+    "ServicesSectionDesc": "We are one of the most reliable and flexible companies in Greece, offering consistency, adaptability, and continuous support in every collaboration. Our clients trust us for our prompt response and the quality of our services — elements that make us a solid choice in the market.",
+    "ServiceImageAlt": "Delivery service interaction",
+
+       "ServicesSubtitle": "Our Services",
+    "ServicesMainTitle": "A set of Services for every need",
+    "ServicesGridLabel": "Our services",
+    "Service1Title": "City-City",
+    "Service1Desc": "We undertake reliable city-to-city transfers.",
+    "Service2Title": "Door-Door",
+    "Service2Desc": "We offer Door-to-Door transportation services.",
+    "Service3Title": "Delivery",
+    "Service3Desc": "We provide delivery services for all businesses.",
+    "Service4Title": "Management",
+    "Service4Desc": "Delivery management for every business.",
+
+       "SkillsLabel": "Our Skills",
+    "SkillsTitle": "Professionalism and Skills",
+    "SkillsDescription": "We stand out for our professionalism and abilities, offering high-standard services in every collaboration. Our specialized team guarantees efficiency, responsibility and adaptability, responding immediately and effectively to your every need.",
+    "Skill1Name": "Management",
+    "Skill2Name": "Immediacy",
+    "Skill3Name": "Adaptability",
+    "Skill4Name": "Reliability",
+    "Skill5Name": "Speed",
+
+      "ProcessSubtitle": "Working Process",
+    "ProcessMainTitle": "Our procedures that guarantee the result",
+    "Process1Title": "Monitoring",
+    "Process1Desc": "Immediate delivery tracking in real time, for absolute control and information at every stage.",
+    "Process2Title": "Availability",
+    "Process2Desc": "Fleet management for your immediate service, whenever you need us.",
+    "Process3Title": "Speed",
+    "Process3Desc": "High speed service for immediate and reliable deliveries, every time.",
+
+     "HeroTitle": "Our Services"
+  },
+   "Contact": {
+    "HeroTitle": "Contact Us",
+    "HeroAlt": "Contact Background",
+    "SectionLabel": "Communication",
+    "SectionTitle": "You can contact us for any issue.",
+    "EmailLabel": "Email Address",
+    "OfficeLabel": "Head Offices",
+    "OfficeAddress": "CLOSED 17 10552 ATHENS GEMI",
+    "VATInfo": "185252101000 VAT No. 802916058",
+    "Form": {
+      "Name": "Name *",
+      "Email": "Email *",
+      "Phone": "Phone",
+      "Subject": "Subject",
+      "Message": "Your Message *"
+    },
+    "SendRequest": "SEND REQUEST",
+    "Sending": "SENDING...",
+    "SuccessMessage": "Thank you for your message! We will contact you soon.",
+    "ErrorMessage": "An error occurred. Please try again.",
+    "NetworkError": "Network error. Please check your connection and try again."
+  }
+
+
+}
+
