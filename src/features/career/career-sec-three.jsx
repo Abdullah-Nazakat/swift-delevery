@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 import CareerBanner from "../../../public/career2.jpeg";
-
+import Link from "next/link";
 const CareerSecThree = () => {
   const t = useTranslations("Career");
 
@@ -30,10 +30,14 @@ const CareerSecThree = () => {
         <p className="text-white/90 mb-8 text-sm md:text-base">
           {t("SendCVDesc")}
         </p>
-        <button className="flex items-center gap-2 bg-blue-900 hover:bg-blue-800 text-white font-semibold text-sm md:text-base px-6 py-3 rounded-full transition-all">
+        <Link 
+        href='/contact'
+        className="flex items-center gap-2 bg-blue-900
+         hover:bg-blue-800 text-white font-semibold text-sm
+          md:text-base px-6 py-3 rounded-full transition-all justify-center">
           {t("ApplyNow")}
           <Send size={16} className="ml-1" />
-        </button>
+        </Link>
       </div>
     </section>
   );

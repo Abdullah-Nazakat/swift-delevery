@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { ChevronUp } from 'lucide-react'
 import Logo from '../../public/logo.png'
 import { useTranslations } from 'next-intl'
-
+import Link from 'next/link'
 const Footer = () => {
   const t = useTranslations('Footer') // Load translations for Footer
 
@@ -27,34 +27,34 @@ const Footer = () => {
         {/* Jobs */}
         <div className="flex flex-col space-y-2">
           <h3 className="text-gray-400">{t('Jobs')}</h3>
-          <a
-            href="#"
+          <Link
+            href="/career"
             className="text-white font-semibold border-b border-gray-500 w-fit hover:text-[#FF5B22] transition"
           >
             {t('ReadMore')}
-          </a>
+          </Link>
         </div>
 
         {/* Contact Us */}
         <div className="flex flex-col space-y-2">
           <h3 className="text-gray-400">{t('ContactUs')}</h3>
-          <a
-            href="#"
+          <Link
+            href="/contact"
             className="text-white font-semibold border-b border-gray-500 w-fit hover:text-[#FF5B22] transition"
           >
             {t('RequestQuote')}
-          </a>
+          </Link>
         </div>
 
         {/* Company Info */}
         <div className="flex flex-col space-y-2">
           <p className="text-gray-400">{t('NeedHelp')}</p>
-          <a
-            href="#"
+          <Link
+            href="/contact"
             className="text-white font-semibold border-b border-gray-500 w-fit hover:text-[#FF5B22] transition"
           >
             {t('ContactUs')}
-          </a>
+          </Link>
 
           <h3 className="text-white font-bold mt-2 leading-snug">
             {t('CompanyName')}
