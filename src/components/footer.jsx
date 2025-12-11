@@ -1,90 +1,106 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import { ChevronUp } from 'lucide-react'
+import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react'
 import Logo from '../../public/logo.png'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+
 const Footer = () => {
-  const t = useTranslations('Footer') // Load translations for Footer
+  const t = useTranslations('Footer')
+
+  const SocialIcon = ({ Icon }) => (
+    <a href="#" className="w-10 h-10 bg-[#FCD34D] rounded-lg flex items-center justify-center hover:bg-[#fbbf24] transition-colors">
+      <Icon className="w-5 h-5 text-white" fill="white" />
+    </a>
+  )
+
+  const FooterLink = ({ href, children }) => (
+    <Link
+      href={href}
+      className="text-gray-600 hover:text-[#FCD34D] transition-colors text-[15px]"
+    >
+      {children}
+    </Link>
+  )
 
   return (
-    <footer className="bg-[#282828] text-gray-300">
-      {/* Top Section */}
-      <div className="container mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
-        
-        {/* Logo */}
-        <div className="flex flex-col items-center md:items-start">
-          <Image
-            src={Logo}
-            alt={t('LogoAlt') || 'Swift Deliver Logo'}
-            width={100}
-            height={100}
-            className="object-contain mb-2"
-          />
+    <footer className="text-gray-800 pt-16 pb-8">
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+
+          {/* Column 1: Brand Info */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-2">
+              <Image
+                src={Logo}
+                alt={t('LogoAlt')}
+                width={50}
+                height={50}
+                className="object-contain"
+              />
+              <span className="text-xl font-bold text-[#FCD34D] uppercase tracking-wide">Fast Delivery</span>
+            </div>
+            <p className="text-gray-600 leading-relaxed text-[15px] pr-4">
+              {t('Description')}
+            </p>
+            <div className="flex items-center gap-3">
+              <SocialIcon Icon={Facebook} />
+              <SocialIcon Icon={Twitter} />
+              <SocialIcon Icon={Linkedin} />
+              <SocialIcon Icon={Instagram} />
+            </div>
+          </div>
+
+          {/* Column 2: Services */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">{t('Services')}</h3>
+            <ul className="space-y-4 flex flex-col">
+              <FooterLink href="/services/fast-delivery">{t('Service1')}</FooterLink>
+              <FooterLink href="/services/quick-ship">{t('Service2')}</FooterLink>
+              <FooterLink href="/services/local-courier">{t('Service3')}</FooterLink>
+              <FooterLink href="/services/cargo-move">{t('Service4')}</FooterLink>
+              <FooterLink href="/services/parcel-drop">{t('Service5')}</FooterLink>
+            </ul>
+          </div>
+
+          {/* Column 3: Company */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">{t('Company')}</h3>
+            <ul className="space-y-4 flex flex-col">
+              <FooterLink href="/about">{t('Company1')}</FooterLink>
+              <FooterLink href="/contact">{t('Company2')}</FooterLink>
+              <FooterLink href="/blog">{t('Company3')}</FooterLink>
+              <FooterLink href="/case-studies">{t('Company4')}</FooterLink>
+              <FooterLink href="/partners">{t('Company5')}</FooterLink>
+            </ul>
+          </div>
+
+          {/* Column 4: Resources */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">{t('Resources')}</h3>
+            <ul className="space-y-4 flex flex-col">
+              <FooterLink href="/docs">{t('Resource1')}</FooterLink>
+              <FooterLink href="/support">{t('Resource2')}</FooterLink>
+              <FooterLink href="/privacy">{t('Resource3')}</FooterLink>
+              <FooterLink href="/terms">{t('Resource4')}</FooterLink>
+              <FooterLink href="/faq">{t('Resource5')}</FooterLink>
+            </ul>
+          </div>
+
         </div>
 
-        {/* Jobs */}
-        <div className="flex flex-col space-y-2">
-          <h3 className="text-gray-400">{t('Jobs')}</h3>
-          <Link
-            href="/career"
-            className="text-white font-semibold border-b border-gray-500 w-fit hover:text-[#FF5B22] transition"
-          >
-            {t('ReadMore')}
-          </Link>
+        {/* Divider */}
+        <div className="border-t border-gray-300 mt-16 mb-8"></div>
+
+        {/* Bottom Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm gap-4">
+          <p>{t('Copyright')}</p>
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="hover:text-[#FCD34D] transition-colors">{t('PrivacyPolicy')}</Link>
+            <Link href="/terms" className="hover:text-[#FCD34D] transition-colors">{t('TermsOfService')}</Link>
+          </div>
         </div>
-
-        {/* Contact Us */}
-        <div className="flex flex-col space-y-2">
-          <h3 className="text-gray-400">{t('ContactUs')}</h3>
-          <Link
-            href="/contact"
-            className="text-white font-semibold border-b border-gray-500 w-fit hover:text-[#FF5B22] transition"
-          >
-            {t('RequestQuote')}
-          </Link>
-        </div>
-
-        {/* Company Info */}
-        <div className="flex flex-col space-y-2">
-          <p className="text-gray-400">{t('NeedHelp')}</p>
-          <Link
-            href="/contact"
-            className="text-white font-semibold border-b border-gray-500 w-fit hover:text-[#FF5B22] transition"
-          >
-            {t('ContactUs')}
-          </Link>
-
-          <h3 className="text-white font-bold mt-2 leading-snug">
-            {t('CompanyName')}
-          </h3>
-          <p className="text-gray-400">{t('GEMINumber')}</p>
-          <p className="text-gray-400">{t('VATNumber')}</p>
-          <a
-            href="mailto:info@swiftdelivery.gr"
-            className="text-white hover:text-[#FF5B22] transition"
-          >
-            info@swiftdelivery.gr
-          </a>
-        </div>
-      </div>
-
-      {/* Divider */}
-      <div className="border-t border-gray-700 w-11/12 mx-auto"></div>
-
-      {/* Bottom Section */}
-      <div className="flex flex-col md:flex-row justify-between items-center px-6 py-6 text-sm text-gray-400">
-        <p>{t('Copyright')}</p>
-
-        {/* Scroll to top button */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="mt-4 md:mt-0 bg-[#1f1f1f] hover:bg-[#333] text-white p-3 rounded-full transition"
-          aria-label={t('BackToTop')}
-        >
-          <ChevronUp className="w-5 h-5" />
-        </button>
       </div>
     </footer>
   )

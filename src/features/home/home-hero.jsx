@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import Swift from '../../../public/swiftdeliver.jpg'
+import Swift from '../../../public/swiftdeliver.png'
 import { ArrowRight, Send } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -10,41 +10,44 @@ const HomeHero = () => {
   const t = useTranslations('HomePage')
 
   return (
-    <section className="relative h-screen flex items-center justify-center bg-[#f9aa33] overflow-hidden mt-2">
-      <div className="absolute inset-0">
-        <Image
-          src={Swift}
-          alt="Delivery Person"
-          fill
-          className="object-cover object-center opacity-100"
-        />
-      </div>
+    <section className="relative w-full py-12 px-4 md:px-8 bg-[#fcd34d] flex items-center justify-center min-h-[90vh]">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 bg-[#fcd34d] rounded-3xl overflow-hidden border border-black/5 shadow-xl min-h-[600px]">
+        {/* Left Content */}
+        <div className="flex flex-col justify-center p-8 md:p-16 space-y-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+            {t('HeroTitle')}
+          </h1>
 
-      <div className="absolute inset-0 bg-[#f9aa33]/50"></div>
+          <p className="text-slate-800 text-lg md:text-xl max-w-md leading-relaxed">
+            {t('HeroDescription') || "We provide seamless delivery solutions for all your needs. From same-day delivery to international shipping, we've got you covered."}
+          </p>
 
-      <div className="relative z-10 text-center text-white max-w-2xl px-4 animate-fadeIn">
-        <h2 className="text-lg md:text-xl font-semibold mb-6 drop-shadow-lg">
-          {t('HeroTitle')}
-        </h2>
+          <div className="flex flex-wrap gap-4 pt-4">
+            <Link
+              href='/about'
+              className="px-8 py-3 bg-[#0f172a] hover:bg-[#1e293b] text-white font-medium rounded-full transition-colors duration-300 shadow-md"
+            >
+              {t('GetStarted') || "Get Started"}
+            </Link>
 
-        <div className="flex justify-center gap-6">
-          <Link
-          href='/about'
-            className="flex items-center gap-2 bg-[#ff2d20] hover:bg-[#e2251a] 
-            text-white font-semibold px-8 py-4 rounded-full text-sm md:text-base 
-            transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer"
-          >
-            {t('LearnAboutUs')} <Send size={18} />
-          </Link>
+            <Link
+              href='/services-02'
+              className="px-8 py-3 bg-transparent border-2 border-[#0f172a] text-[#0f172a] hover:bg-[#0f172a] hover:text-white font-medium rounded-full transition-all duration-300"
+            >
+              {t('LearnMore') || "Learn More"}
+            </Link>
+          </div>
+        </div>
 
-          <Link
-          href='/services-02'
-            className="flex items-center gap-2 bg-white hover:bg-gray-100 
-            text-[#ff2d20] font-semibold px-8 py-4 rounded-full text-sm md:text-base 
-            transition-all duration-300 transform hover:scale-105 hover:shadow-lg cursor-pointer"
-          >
-            {t('OurServices')} <ArrowRight size={18} />
-          </Link>
+        {/* Right Image */}
+        <div className="relative h-[400px] md:h-auto w-full">
+          <Image
+            src={Swift}
+            alt="Fast Delivery Service"
+            fill
+            className="object-cover object-center"
+            priority
+          />
         </div>
       </div>
     </section>

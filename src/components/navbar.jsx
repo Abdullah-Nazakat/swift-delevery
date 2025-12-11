@@ -8,7 +8,7 @@ import LanguageSwitcher from './LanguageSwitcher'
 import { Link } from '@/i18n/navigation'
 
 const Navbar = () => {
-  const t = useTranslations('Navbar') // Load translations for Navbar
+  const t = useTranslations('Navbar') 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navLinks = [
