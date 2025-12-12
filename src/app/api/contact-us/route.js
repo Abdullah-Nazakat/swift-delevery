@@ -56,30 +56,74 @@ export async function POST(request) {
           },
         });
 
-        const mailOptions = {
-          from: process.env.GMAIL_USER,
-          to: process.env.NOTIFICATION_EMAIL,
-          subject: `New Contact Form From Swift-Delivery: ${subject || 'No Subject'}`,
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #333; border-bottom: 2px solid #f97316; padding-bottom: 10px;">New Contact Form Submission</h2>
-              <div style="background: #f9f9f9; padding: 20px; border-radius: 5px;">
-                <p><strong style="color: #333;">Name:</strong> ${name}</p>
-                <p><strong style="color: #333;">Email:</strong> ${email}</p>
-                <p><strong style="color: #333;">Phone:</strong> ${phone || 'Not provided'}</p>
-                <p><strong style="color: #333;">Subject:</strong> ${subject || 'Not provided'}</p>
-                <p><strong style="color: #333;">Message:</strong></p>
-                <div style="background: white; padding: 15px; border-left: 4px solid #f97316; margin-top: 10px;">
-                  ${message.replace(/\n/g, '<br>')}
-                </div>
-              </div>
-              <p style="color: #666; font-size: 12px; margin-top: 20px;">
-                <strong>Submitted at:</strong> ${new Date().toLocaleString()}
-              </p>
-            </div>
-          `,
-        };
+      const mailOptions = {
+  from: process.env.GMAIL_USER,
+  to: process.env.NOTIFICATION_EMAIL,
+  subject: `📩 New Contact Request — Swift Delivery`,
+  html: `
+  <div style="font-family: 'Segoe UI', Tahoma, sans-serif; background: #f6f7f9; padding: 40px;">
+    
+    <div style="max-width: 700px; margin: auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
 
+      <!-- Header -->
+      <div style="background: linear-gradient(135deg, #111828, #0A2540); padding: 28px 35px; color: white;">
+        <h2 style="margin: 0; font-size: 24px; font-weight: 600;">
+          📬 New Contact Form Submission
+        </h2>
+        <p style="margin-top: 8px; opacity: 0.8; font-size: 14px;">
+          A user just submitted a message through your website.
+        </p>
+      </div>
+
+      <!-- Body -->
+      <div style="padding: 35px; background: #ffffff;">
+        
+        <h3 style="font-size: 18px; color: #0A2540; font-weight: 600; margin-bottom: 18px;">
+          🔍 Contact Details
+        </h3>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+          <tr>
+            <td style="padding: 10px 0; font-weight: 600; width: 140px; color: #333;">Name:</td>
+            <td style="padding: 10px 0; color: #555;">${name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; font-weight: 600; color: #333;">Email:</td>
+            <td style="padding: 10px 0; color: #555;">${email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; font-weight: 600; color: #333;">Phone:</td>
+            <td style="padding: 10px 0; color: #555;">${phone || 'Not provided'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; font-weight: 600; color: #333;">Subject:</td>
+            <td style="padding: 10px 0; color: #555;">${subject || 'Not provided'}</td>
+          </tr>
+        </table>
+
+        <h3 style="font-size: 18px; color: #0A2540; font-weight: 600; margin: 30px 0 12px;">
+          💬 Message
+        </h3>
+
+        <div style="background: #f4f7fb; padding: 18px 20px; border-left: 4px solid #0A2540; border-radius: 6px; color: #333; line-height: 1.6; font-size: 15px;">
+          ${message.replace(/\n/g, '<br>')}
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div style="background: #f0f2f5; padding: 20px 35px; font-size: 12px; color: #777; border-top: 1px solid #e3e6ea;">
+        <p style="margin: 0;">
+          Received on <strong>${new Date().toLocaleString()}</strong>
+        </p>
+        <p style="margin-top: 6px;">Swift Delivery — Automated Contact Notification</p>
+      </div>
+
+    </div>
+
+  </div>
+  `,
+};
         await transporter.sendMail(mailOptions);
         console.log('Notification email sent successfully');
       } catch (emailError) {
