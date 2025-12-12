@@ -1,11 +1,12 @@
 import Navbar from '@/components/navbar'
 import Service from '@/features/servicess/services'
-import ServicesSecThree from '@/features/servicess/services-sec-three'
+// import ServicesSecThree from '@/features/servicess/services-sec-three'
 import ServicesSecTwo from '@/features/servicess/services-sec-two'
 import ServicesSecFour from '@/features/servicess/services-sec-four'
 import React from 'react'
 import ServicesSecFive from '@/features/servicess/services-sec-five'
-import HomeSecSix from '@/features/home/home-sec-six'
+// import HomeSecSix from '@/features/home/home-sec-six'
+import ServicesSecSix from '@/features/servicess/services-sec-six'
 import Footer from '@/components/footer'
 
 const page = () => {
@@ -14,10 +15,11 @@ const page = () => {
         <Navbar/>
         <Service/>
         <ServicesSecTwo/>
-        <ServicesSecThree/>
+        {/* <ServicesSecThree/> */}
         <ServicesSecFour/>
         <ServicesSecFive/>
-        <HomeSecSix/>
+        <ServicesSecSix/>
+        {/* <HomeSecSix/> */}
         <Footer/>
     </div>
   )

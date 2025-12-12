@@ -1,14 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Contact from '../../../public/contact.jpeg';
+import ContactImage from '../../../public/contact.png';
 import Navbar from '@/components/navbar';
-import HomeSecSix from '../home/home-sec-six';
 import Footer from '@/components/footer';
 import { useTranslations } from 'next-intl';
+import Faqs from '../home/faqs';
 
-const page = () => {
-  const t = useTranslations('Contact'); // Namespace for translations
+const Page = () => {
+  const t = useTranslations('Contact');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -56,87 +56,128 @@ const page = () => {
   };
 
   return (
-    <>
-      <div className="relative flex flex-col items-center min-h-screen">
-        <Navbar />
+    <div className="min-h-screen flex flex-col ">
+      <Navbar />
 
-        <div className="relative w-full flex justify-center items-center image-career">
-          <h1 className="text-white text-5xl md:text-8xl font-bold tracking-wide text-center">
-            {t('HeroTitle')}
-          </h1>
-        </div>
+      <div className="flex-grow flex items-center justify-center py-12 px-4 md:px-8">
+        <div className="w-[80%] bg-[#F4D055] rounded-3xl shadow-xl overflow-hidden flex flex-col lg:flex-row min-h-[600px]">
 
-        <div className="relative w-full flex flex-col items-center max-w-7xl mx-auto -top-50">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src={Contact}
-              alt={t('HeroAlt')}
-              layout="fill"
-              objectFit="cover"
-              className="w-full h-full"
-              priority
-            />
-            <div className="absolute inset-0 bg-black/50"></div>
-          </div>
-          
-          <div className="relative z-10 w-full flex flex-col items-center px-4 py-16">
-            <span className="text-orange-600 text-sm mb-8 uppercase font-semibold border-t-2 border-b-2 border-orange-600 px-3 py-1">
-              {t('SectionLabel')}
-            </span>
+          {/* Left Side - Form */}
+          <div className="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
 
-            <h2 className="text-white text-3xl md:text-4xl font-bold text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 font-serif tracking-tight">
+              {t('HeroTitle')}
+            </h1>
+
+            <p className="text-slate-800 mb-8 text-sm md:text-base leading-relaxed opacity-90 max-w-md">
               {t('SectionTitle')}
-            </h2>
+            </p>
 
             {submitStatus.message && (
-              <div className={`mb-6 p-4 rounded-md w-full max-w-4xl text-center ${
-                submitStatus.type === 'success' 
-                  ? 'bg-green-100 text-green-800 border border-green-300' 
-                  : 'bg-red-100 text-red-800 border border-red-300'
-              }`}>
+              <div className={`mb-6 p-3 rounded-lg text-sm font-medium ${submitStatus.type === 'success'
+                  ? 'bg-green-100 text-green-800 border border-green-200'
+                  : 'bg-red-100 text-red-800 border border-red-200'
+                }`}>
                 {submitStatus.message}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="max-w-4xl w-full flex flex-col md:flex-row gap-10">
-              <div className="md:w-1/3 flex flex-col space-y-10 text-white">
-                <div className="flex flex-col">
-                  <div className="text-orange-600 mb-2"><span className="text-lg">📧</span></div>
-                  <span className="text-sm opacity-70 mb-1">{t('EmailLabel')}</span>
-                  <span className="font-semibold">info@swiftdeliver.gr</span>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label className="text-slate-800 text-sm font-medium ml-1">{t('Form.Name')}</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    disabled={isSubmitting}
+                    className="bg-transparent border border-slate-700/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-all text-slate-900 placeholder-slate-600/50"
+                  />
                 </div>
-
-                <div className="flex flex-col">
-                  <div className="text-orange-600 mb-2"><span className="text-lg">📍</span></div>
-                  <span className="text-sm opacity-70 mb-1">{t('OfficeLabel')}</span>
-                  <div className="flex flex-col text-sm">
-                    <span className="font-semibold">{t('OfficeAddress')}</span>
-                    <span>{t('VATInfo')}</span>
-                  </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-slate-800 text-sm font-medium ml-1">{t('Form.Email')}</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    disabled={isSubmitting}
+                    className="bg-transparent border border-slate-700/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-all text-slate-900 placeholder-slate-600/50"
+                  />
                 </div>
               </div>
 
-              <div className="md:w-2/3 flex flex-col space-y-8">
-                <input type="text" name="name" placeholder={t('Form.Name')} value={formData.name} onChange={handleChange} required className="bg-transparent border-b border-neutral-700 text-white pb-2 focus:outline-none focus:border-orange-600" disabled={isSubmitting} />
-                <input type="email" name="email" placeholder={t('Form.Email')} value={formData.email} onChange={handleChange} required className="bg-transparent border-b border-neutral-700 text-white pb-2 focus:outline-none focus:border-orange-600" disabled={isSubmitting} />
-                <input type="tel" name="phone" placeholder={t('Form.Phone')} value={formData.phone} onChange={handleChange} className="bg-transparent border-b border-neutral-700 text-white pb-2 focus:outline-none focus:border-orange-600" disabled={isSubmitting} />
-                <input type="text" name="subject" placeholder={t('Form.Subject')} value={formData.subject} onChange={handleChange} className="bg-transparent border-b border-neutral-700 text-white pb-2 focus:outline-none focus:border-orange-600" disabled={isSubmitting} />
-                <textarea name="message" placeholder={t('Form.Message')} rows="3" value={formData.message} onChange={handleChange} required className="bg-transparent border-b border-neutral-700 text-white pb-2 focus:outline-none focus:border-orange-600 resize-none" disabled={isSubmitting}></textarea>
-                <button type="submit" disabled={isSubmitting} className="bg-orange-600 hover:bg-orange-700 disabled:bg-orange-400 text-white font-bold py-3 px-6 rounded-md shadow-lg transition duration-300 w-fit mt-6 disabled:cursor-not-allowed">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label className="text-slate-800 text-sm font-medium ml-1">{t('Form.Phone')}</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    className="bg-transparent border border-slate-700/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-all text-slate-900 placeholder-slate-600/50"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-slate-800 text-sm font-medium ml-1">{t('Form.Subject')}</label>
+                  <input
+                    type="text"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    className="bg-transparent border border-slate-700/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-all text-slate-900 placeholder-slate-600/50"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-slate-800 text-sm font-medium ml-1">{t('Form.Message')}</label>
+                <textarea
+                  name="message"
+                  rows="4"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  disabled={isSubmitting}
+                  className="bg-transparent border border-slate-700/50 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-all text-slate-900 placeholder-slate-600/50 resize-none bg-yellow-500/10"
+                ></textarea>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="bg-[#0B1221] text-white font-semibold py-3 px-10 rounded-xl shadow-lg hover:bg-slate-800 transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+                >
                   {isSubmitting ? t('Sending') : t('SendRequest')}
                 </button>
               </div>
             </form>
           </div>
+
+          {/* Right Side - Image */}
+          <div className="w-full lg:w-1/2 relative min-h-[300px] lg:min-h-full">
+            <Image
+              src={ContactImage}
+              alt={t('HeroAlt')}
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+
         </div>
       </div>
 
-      <div className="-mt-50">
-        <HomeSecSix />
-      </div>
+<Faqs/>
       <Footer />
-    </>
+    </div>
   );
 };
 
-export default page;
+export default Page;

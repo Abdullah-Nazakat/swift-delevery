@@ -3,11 +3,11 @@ import { useTranslations } from 'next-intl';
 import React, { useState, useEffect, useRef } from 'react';
 
 const skillsDataTemplate = [
-  { key: 'Skill1Name', percentage: 100 },
-  { key: 'Skill2Name', percentage: 100 },
-  { key: 'Skill3Name', percentage: 100 },
-  { key: 'Skill4Name', percentage: 100 },
-  { key: 'Skill5Name', percentage: 100 },
+  { key: 'Skill1Name', percentage: 98 },
+  { key: 'Skill2Name', percentage: 95 },
+  { key: 'Skill3Name', percentage: 92 },
+  { key: 'Skill4Name', percentage: 99 },
+  { key: 'Skill5Name', percentage: 96 },
 ];
 
 const SkillBar = ({ name, percentage, isVisible }) => {
@@ -22,14 +22,14 @@ const SkillBar = ({ name, percentage, isVisible }) => {
   }, [isVisible, percentage]);
 
   return (
-    <div className="mb-8">
-      <div className="flex justify-between items-end mb-2">
-        <h4 className="text-xl font-medium text-gray-800">{name}</h4>
-        <span className="text-xl font-semibold text-gray-800">{width}</span>
+    <div className="mb-6 last:mb-0">
+      <div className="flex justify-between items-center mb-2">
+        <h4 className="text-lg font-medium text-slate-700">{name}</h4>
+        <span className="text-lg font-semibold text-slate-800">{percentage}%</span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+      <div className="w-full bg-slate-900 rounded-full h-3 overflow-hidden">
         <div
-          className="h-2 rounded-full transition-all duration-1000 ease-out bg-gradient-to-r from-red-600 to-orange-500"
+          className="h-full rounded-full transition-all duration-1000 ease-out bg-[#F4CE4F]"
           style={{ width }}
         />
       </div>
@@ -38,7 +38,7 @@ const SkillBar = ({ name, percentage, isVisible }) => {
 };
 
 const ServicesSecFour = () => {
-  const t = useTranslations('Services'); // namespace for localization
+  const t = useTranslations('Services');
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
@@ -62,36 +62,22 @@ const ServicesSecFour = () => {
   }));
 
   return (
-    <div ref={sectionRef} className="bg-white py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row gap-16">
-          <div className="md:w-5/12 relative pb-8 md:pb-0">
-            <span
-              className="absolute top-0 left-0 text-9xl sm:text-[180px] font-extrabold 
-                         text-gray-100 opacity-60 pointer-events-none -z-10 select-none 
-                         leading-none transform translate-y-[-40px] translate-x-[-10px] 
-                         md:translate-y-[-70px] md:translate-x-[-20px]"
-              aria-hidden="true"
-            >
-              03
-            </span>
+    <div ref={sectionRef} className="py-12 px-4 md:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
 
-            <div className="flex items-center mb-4 pt-4 relative z-10">
-              <div className="w-8 h-0.5 bg-orange-500 mr-3"></div>
-              <p className="text-sm font-semibold text-orange-500 tracking-wider uppercase">
-                {t('SkillsLabel')}
-              </p>
-            </div>
-
-            <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 relative z-10 leading-tight">
+          {/* Left Column: Text */}
+          <div>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#F4CE4F] mb-6 leading-tight">
               {t('SkillsTitle')}
             </h2>
-
-            <p className="text-gray-600 text-lg max-w-lg">
+            <p className="text-slate-700 text-lg leading-relaxed">
               {t('SkillsDescription')}
             </p>
           </div>
-          <div className="md:w-7/12 mt-12 md:mt-0">
+
+          {/* Right Column: Skills */}
+          <div>
             {skillsData.map((skill) => (
               <SkillBar
                 key={skill.name}
@@ -101,6 +87,7 @@ const ServicesSecFour = () => {
               />
             ))}
           </div>
+
         </div>
       </div>
     </div>

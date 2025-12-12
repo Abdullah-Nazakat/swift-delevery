@@ -1,78 +1,86 @@
-'use client';
 import React from 'react';
-import { Minus } from 'lucide-react';
-import Image from 'next/image';
-import Srvice1 from '../../../public/info-service-1.png';
-import Srvice2 from '../../../public/info-service-2.png';
-import Srvice3 from '../../../public/info-service-3.png';
+import { Smartphone, Zap, Gauge } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 const ServicesSecFive = () => {
-  const t = useTranslations('Services'); // Namespace for localization
+  const t = useTranslations('Services');
 
   const servicesData = [
     {
       id: 1,
-      image: Srvice1,
+      icon: Smartphone,
       title: t('Process1Title'),
       desc: t('Process1Desc'),
     },
     {
       id: 2,
-      image: Srvice2,
+      icon: Zap,
       title: t('Process2Title'),
       desc: t('Process2Desc'),
     },
     {
       id: 3,
-      image: Srvice3,
+      icon: Gauge,
       title: t('Process3Title'),
       desc: t('Process3Desc'),
     },
   ];
 
   return (
-    <section className="bg-white">
-      {/* Section Header */}
-      <div className="flex flex-col justify-center items-center text-center mb-12">
-        <div className="flex items-center justify-center mb-4 text-orange-600" aria-hidden="true">
-          <Minus className="w-6 h-6 text-orange-600" />
-          <span className="text-sm uppercase tracking-widest font-bold mx-2">
-            {t('ProcessSubtitle')}
-          </span>
-          <Minus className="w-6 h-6 text-orange-600" />
-        </div>
+    <section>
+      {/* Top Yellow Section */}
+      <div className="bg-[#FCDA50] py-12 px-4 md:px-8">
+        <div className="mx-auto">
+          {/* Header */}
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#111111] max-w-4xl mx-auto leading-tight">
+              {t('ProcessMainTitle')}
+            </h2>
+          </div>
 
-        <h2 className="text-3xl md:text-4xl font-bold max-w-2xl">
-          {t('ProcessMainTitle')}
-        </h2>
+          {/* Icons Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 max-w-6xl mx-auto">
+            {servicesData.map(({ id, icon: Icon, title, desc }) => (
+              <div key={id} className="flex flex-col items-center text-center group">
+                {/* Icon Circle */}
+                <div className="w-28 h-28 bg-[#F4F6F9] rounded-full flex items-center justify-center mb-8 shadow-sm transition-transform duration-300 group-hover:scale-110">
+                  <Icon className="w-10 h-10 text-[#0f172a]" strokeWidth={1.5} />
+                </div>
+
+                {/* Content */}
+                <h3 className="text-2xl font-bold text-[#111111] mb-4">
+                  {title}
+                </h3>
+                <p className="text-[#111111]/80 text-lg leading-relaxed max-w-xs">
+                  {desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Services Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto px-6">
-        {servicesData.map(({ id, image, title, desc }) => (
-          <div
-            key={id}
-            className="group flex flex-col items-center text-center rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-2 cursor-pointer"
-          >
-            {/* Image with animation */}
-            <div className="mb-6 overflow-hidden rounded-full">
-              <Image
-                src={image}
-                alt={title}
-                width={150}
-                height={150}
-                className="transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1"
-              />
-            </div>
-
-            {/* Title */}
-            <h3 className="text-xl font-bold mb-3 text-gray-800">{title}</h3>
-
-            {/* Description */}
-            <p className="text-gray-600 text-sm leading-relaxed max-w-xs">{desc}</p>
+      {/* Bottom Dark Section */}
+      <div className="bg-[#0f172a] py-16 px-4 md:px-8">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 py-4">
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 tracking-wide">
+              {t('FooterPromoTitle')}
+            </h2>
+            <p className="text-gray-400 text-sm tracking-[0.2em] font-medium uppercase">
+              {t('FooterPromoSubtitle')}
+            </p>
           </div>
-        ))}
+
+          <div>
+            <a
+              href="tel:+306974567"
+              className="inline-block bg-[#FCDA50] hover:bg-[#fae27a] text-[#111111] font-bold py-4 px-8 rounded-full text-lg transition-transform duration-300 hover:scale-105 active:scale-95 shadow-lg"
+            >
+              +30 697 4567
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );

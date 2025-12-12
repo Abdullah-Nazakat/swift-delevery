@@ -41,7 +41,7 @@ body {
 }
 
 .image-about {
-  background-image: url(../../../public/about.jpeg);
+  /* background-image: url(../../../public/about.jpeg); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -54,7 +54,7 @@ body {
 }
 
 .image-career {
-  background-image: url(../../../public/bg-careet.jpg);
+  /* background-image: url(../../../public/bg-careet.jpg); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

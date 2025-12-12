@@ -5,7 +5,7 @@ import HomeSecTwo from '../../features/home/home-sec-two'
 import HomeSecThree from '../../features/home/home-sec-three'
 // import HomeSecFour from '../../features/home/home-sec-four'
 import HomeSecFive from '../../features/home/home-sec-five'
-import HomeSecSix from '../../features/home/home-sec-six'
+// import HomeSecSix from '../../features/home/home-sec-six'
 import Footer from '@/components/footer'
 import HomeProcess from '@/features/home/home-process'
 import Testimonials from '@/features/home/testimonials'
@@ -24,7 +24,7 @@ const page = () => {
         <Testimonials/>
         <Faqs/>
         <HomeSecSeven/>
-      <HomeSecSix/>
+      {/* <HomeSecSix/> */}
       <Footer/>
     </div>
   )
