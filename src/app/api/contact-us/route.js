@@ -67,10 +67,10 @@ export async function POST(request) {
 
       <!-- Header -->
       <div style="background: linear-gradient(135deg, #111828, #0A2540); padding: 28px 35px; color: white;">
-        <h2 style="margin: 0; font-size: 24px; font-weight: 600;">
+        <h2 style="margin: 0; font-size: 24px; font-weight: 600; color:"#f6f7f9">
           📬 New Contact Form Submission
         </h2>
-        <p style="margin-top: 8px; opacity: 0.8; font-size: 14px;">
+        <p style="margin-top: 8px; opacity: 0.8; font-size: 14px;color:"#f6f7f9"">
           A user just submitted a message through your website.
         </p>
       </div>

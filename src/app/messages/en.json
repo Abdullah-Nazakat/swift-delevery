@@ -20,6 +20,17 @@
     "QuoteSectionTitle": "Request a Quote",
     "QuoteSectionSubtitle": "For any of your needs",
     "QuoteSectionDesc": "We’re here to provide reliable, fast, and efficient transportation services — customized to your needs.",
+    "GetStartedSection": {
+  "Title": "Ready to Get Started?",
+  "Description": "Join thousands of satisfied customers who trust us with their delivery needs. Experience the difference of professional, reliable service.",
+  "StartShipping": "Start Shipping Now",
+  "ViewPricing": "View Pricing"
+},
+"FormSuccessMessage": "Thank you for your shipment quote request! We will contact you soon.",
+"FormErrorMessage": "An error occurred. Please try again.",
+"FormNetworkError": "Network error. Please check your internet connection.",
+"FormSubmitting": "Submitting...",
+"FormSubmit": "Submit",
     "Form": {
       "FullName": "Full Name*",
       "Phone": "Phone*",
@@ -84,7 +95,7 @@
     "The Company": "The Company",
     "Job Positions": "Job Positions",
     "Services": "Services",
-    "Communication": "Communication",
+    "Communication": "Contact",
     "PhoneNumber": "693-182-8493",
     "CallUs": "Call Us",
     "ToggleMenu": "Open main menu"

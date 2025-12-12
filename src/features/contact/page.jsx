@@ -5,6 +5,7 @@ import ContactImage from '../../../public/contact.png';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import { useTranslations } from 'next-intl';
+import Location from './location';
 import Faqs from '../home/faqs';
 
 const Page = () => {
@@ -173,8 +174,10 @@ const Page = () => {
 
         </div>
       </div>
-
-<Faqs/>
+<Location/>
+<div className="mt-12">
+  <Faqs/>
+</div>
       <Footer />
     </div>
   );

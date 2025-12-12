@@ -14,7 +14,7 @@ const Navbar = () => {
   const navLinks = [
     { key: 'Home', path: '/' },
     { key: 'about', path: '/about' },
-    { key: 'Job Positions', path: '/career' },
+    // { key: 'Job Positions', path: '/career' },
     { key: 'Services', path: '/services-02' },
     { key: 'Communication', path: '/contact' }
   ].map((item) => ({ ...item, label: t(item.key) }))
@@ -29,7 +29,7 @@ const Navbar = () => {
 
   return (
     <div className="pt-[72px]">
-      <nav className="fixed top-0 left-0 w-full bg-white shadow-xl z-50 transition-all duration-300">
+      <nav className="fixed top-0 left-0 w-full bg-[#0A2540] shadow-xl z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
 
@@ -54,7 +54,7 @@ const Navbar = () => {
                 <Link
                   key={link.key}
                   href={link.path}
-                  className="text-gray-700 font-semibold text-sm uppercase tracking-wider hover:text-orange-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-md"
+                  className="text-white font-semibold text-sm uppercase tracking-wider hover:text-orange-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded-md"
                 >
                   {link.label}
                 </Link>
