@@ -1,144 +1,57 @@
 'use client'
-import React, { useRef ,useMemo} from 'react'
+import React from 'react'
 import Image from "next/image";
 import StepOne from "../../../public/step-1.png"
 import StepTwo from "../../../public/step-2.png"
 import StepThree from "../../../public/step-3.png"
 import StepFour from "../../../public/step-4.png"
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Line, PerspectiveCamera } from '@react-three/drei'
-import * as THREE from 'three'
-
+import { motion } from 'framer-motion'
 
 const steps = [
-    {
-        id: 1,
-        title: "Initiate Order",
-        description: "Input mission parameters and payload details to commence.",
-        image: StepOne,
-    },
-    {
-        id: 2,
-        title: "Telemetry Tracking",
-        description: "Real-time orbital monitoring of your cargo's vector.",
-        image: StepTwo,
-    },
-    {
-        id: 3,
-        title: "Rapid Transit",
-        description: "High-velocity transport via our specialized courier fleet.",
-        image: StepThree,
-    },
-    {
-        id: 4,
-        title: "Mission Complete",
-        description: "Secure payload delivery and digital confirmation sequence.",
-        image: StepFour,
-    },
+    { id: 1, title: "Order", description: "Place your request online.", image: StepOne },
+    { id: 2, title: "Pickup", description: "We collect your package.", image: StepTwo },
+    { id: 3, title: "Transit", description: "Real-time tracking.", image: StepThree },
+    { id: 4, title: "Arrival", description: "Safe delivery confirmed.", image: StepFour },
 ];
 
-const FlightPath = () => {
-    const lineRef = useRef()
-
-    // Create a more technical looking path
-    const points = useMemo(() => {
-        const p = []
-        for (let i = -10; i <= 10; i += 0.5) {
-            p.push(new THREE.Vector3(i, Math.sin(i * 0.5) * 1.5, 0))
-        }
-        return p
-    }, [])
-
-    return (
-        <group position={[0, 0, -5]}>
-            <Line
-                ref={lineRef}
-                points={points}
-                color="#FFFFFF"
-                lineWidth={1}
-                dashed={true}
-                dashScale={2}
-                dashSize={1}
-                gapSize={1}
-                opacity={0.3}
-                transparent
-            />
-        </group>
-    )
-}
+const SimpleStep = ({ step, index }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.15 }}
+        viewport={{ once: true }}
+        className="flex flex-col items-center text-center group"
+    >
+        <div className="relative w-48 h-48 mb-8 rounded-full bg-white shadow-xl flex items-center justify-center border border-gray-100 group-hover:scale-105 transition-transform duration-300">
+            <div className="absolute top-0 right-0 w-10 h-10 bg-[#0071E3] rounded-full flex items-center justify-center text-white font-bold text-lg z-20">
+                {step.id}
+            </div>
+            <div className="w-32 h-32 relative overflow-hidden rounded-xl">
+                <Image src={step.image} alt={step.title} fill className="object-cover" />
+            </div>
+        </div>
+        <h3 className="text-2xl font-bold text-[#1D1D1F] mb-2">{step.title}</h3>
+        <p className="text-gray-500">{step.description}</p>
+    </motion.div>
+)
 
 export default function HomeProcess() {
-    const containerRef = useRef(null)
-
     return (
-        <section ref={containerRef} className="relative py-32 px-4 md:px-8 bg-[#0B0B0C] overflow-hidden">
-            {/* Background 3D Elements */}
-            <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-                <Canvas>
-                    <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-                    <FlightPath />
-                </Canvas>
-            </div>
-
-            <div className="relative z-10 max-w-7xl mx-auto">
+        <section className="relative py-24 md:py-32 bg-[#F5F5F7] z-10">
+            <div className="container mx-auto px-6">
                 <div className="text-center mb-20">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="inline-block border border-white/20 px-4 py-1 rounded-full mb-4 bg-white/5 backdrop-blur-md"
-                    >
-                        <span className="text-gray-400 text-xs font-mono uppercase tracking-widest">Protocol Sequence</span>
-                    </motion.div>
-
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tighter uppercase"
-                    >
-                        Operational Flow
-                    </motion.h2>
+                    <h2 className="text-4xl md:text-5xl font-bold text-[#1D1D1F] tracking-tight mb-4">
+                        How It Works
+                    </h2>
+                    <p className="text-xl text-gray-500">Simple, transparent, and fast.</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
+                    {/* Connecting Line */}
+                    <div className="hidden md:block absolute top-24 left-0 w-full h-0.5 bg-gray-200 -z-10" />
+
                     {steps.map((step, index) => (
-                        <motion.div
-                            key={step.id}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="bg-zinc-900/50 border border-white/5 p-6 hover:bg-zinc-800/50 transition-colors duration-300 group"
-                        >
-                            <div className="flex justify-between items-start mb-6">
-                                <span className="text-4xl font-mono font-bold text-white/10 group-hover:text-white/30 transition-colors">
-                                    0{step.id}
-                                </span>
-                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]"></div>
-                            </div>
-
-                            <div className="mb-6 relative h-40 w-full overflow-hidden opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0">
-                                <Image
-                                    src={step.image}
-                                    alt={step.title}
-                                    fill
-                                    className="object-cover"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent" />
-                            </div>
-
-                            <div className="space-y-3 border-t border-white/10 pt-4">
-                                <h3 className="text-lg font-bold text-white uppercase tracking-wider">
-                                    {step.title}
-                                </h3>
-                                <p className="text-gray-500 text-sm leading-relaxed font-mono">
-                                    {step.description}
-                                </p>
-                            </div>
-                        </motion.div>
+                        <SimpleStep key={step.id} step={step} index={index} />
                     ))}
                 </div>
             </div>
