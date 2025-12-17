@@ -8,7 +8,7 @@ import LanguageSwitcher from './LanguageSwitcher'
 import { Link } from '@/i18n/navigation'
 
 const Navbar = () => {
-  const t = useTranslations('Navbar') 
+  const t = useTranslations('Navbar')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navLinks = [
@@ -29,7 +29,7 @@ const Navbar = () => {
 
   return (
     <div className="pt-[72px]">
-      <nav className="fixed top-0 left-0 w-full bg-[#0A2540] shadow-xl z-50 transition-all duration-300">
+      <nav className="fixed top-0 left-0 w-full bg-[#0A2540] shadow-xl z-[100] transition-all duration-300">
         <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
 
@@ -93,9 +93,8 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-            isMenuOpen ? 'max-h-96 border-t border-gray-100' : 'max-h-0'
-          }`}
+          className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-96 border-t border-gray-100' : 'max-h-0'
+            }`}
           id="mobile-menu"
         >
           <div className="px-2 pt-2 pb-3 space-y-2 sm:px-3">
