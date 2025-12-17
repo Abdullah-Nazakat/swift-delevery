@@ -3,7 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import Img from '../../../public/secthree.jpg'
-import { Square, CheckSquare } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const HomeSecThree = () => {
@@ -27,47 +27,33 @@ const HomeSecThree = () => {
   ]
 
   return (
-    <section className="relative py-24 px-6 md:px-12 bg-[#050505] overflow-hidden border-t border-white/10">
-      {/* Background Tech Elements */}
-      <div className="absolute top-10 right-10 w-20 h-20 border-t border-r border-white/10 hidden lg:block"></div>
-      <div className="absolute bottom-10 left-10 w-20 h-20 border-b border-l border-white/10 hidden lg:block"></div>
-      <div className="absolute inset-0 tech-grid opacity-10 pointer-events-none"></div>
+    <div className=" py-12 px-4 md:px-8 font-sans relative overflow-hidden">
+      {/* Central Dotted Line (Visual separator for larger screens) */}
+      <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2  hidden lg:block" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
 
-          {/* Left Column: Image with Tech Frame */}
+          {/* Left Column: Image with Blob Background */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeIn}
-            className="relative group"
+            className="relative lg:pr-8 group"
           >
-            {/* Tech Frame */}
-            <div className="absolute -inset-4 border border-white/20 z-0">
-              <div className="absolute top-0 left-0 w-2 h-2 bg-white"></div>
-              <div className="absolute top-0 right-0 w-2 h-2 bg-white"></div>
-              <div className="absolute bottom-0 left-0 w-2 h-2 bg-white"></div>
-              <div className="absolute bottom-0 right-0 w-2 h-2 bg-white"></div>
-            </div>
+            {/* Yellow/Orange Blob Background */}
+            <div className="absolute -inset-4 bg-[#FBB016] rounded-[2rem] rotate-3 scale-100 group-hover:scale-105 transition-transform duration-500 -z-10 shadow-lg blur-[1px]"></div>
 
-            {/* Image Container */}
-            <div className="relative z-10 overflow-hidden bg-[#111] grayscale group-hover:grayscale-0 transition-all duration-700">
-              <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 pointer-events-none mix-blend-overlay"></div>
-              {/* Scanline */}
-              <div className="absolute w-full h-1 bg-white/20 top-0 left-0 animate-scanline z-20"></div>
-
+            {/* Main Image */}
+            <div className="relative rounded-[1.5rem] overflow-hidden shadow-2xl skew-y-0 transform transition-transform duration-500">
               <Image
                 src={Img}
-                alt="About Mission"
-                className="w-full h-[400px] lg:h-[500px] object-cover object-center opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                alt="About Section"
+                className="w-full h-[400px] lg:h-[500px] object-cover object-center"
               />
             </div>
-
-            <div className="absolute -bottom-6 -right-6 text-xs text-gray-500 font-mono hidden md:block">
-              IMG_REF: A-774 // CLASSIFIED
-            </div>
+            <div className="absolute -bottom-6 -left-6 w-24 h-24 " />
           </motion.div>
 
           {/* Right Column: Content */}
@@ -76,39 +62,35 @@ const HomeSecThree = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={stagger}
-            className="relative"
+            className="relative lg:pl-8"
           >
             {/* Pill Label */}
-            <motion.div variants={fadeIn} className="flex items-center gap-2 mb-6">
-              <div className="w-2 h-2 bg-white animate-pulse"></div>
-              <span className="text-white font-mono text-sm uppercase tracking-widest">
-                {t('AboutSubtitle') || "System Overview"}
+            <motion.div variants={fadeIn} className="inline-block px-6 py-2 bg-[#FCD34D] rounded-full mb-6 shadow-sm border border-[#FBB016]/20">
+              <span className="text-white font-bold text-lg tracking-wide uppercase drop-shadow-sm">
+                {t('AboutSubtitle')}
               </span>
             </motion.div>
 
             {/* Title */}
-            <motion.h2 variants={fadeIn} className="text-4xl md:text-5xl font-bold text-white mb-6 uppercase tracking-tight leading-none">
+            <motion.h2 variants={fadeIn} className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1F2937] mb-6 leading-tight">
               {t('AboutTitle')}
             </motion.h2>
 
             {/* Description */}
-            <motion.p variants={fadeIn} className="text-gray-400 text-lg leading-relaxed mb-10 border-l-2 border-white/20 pl-6">
+            <motion.p variants={fadeIn} className="text-[#4B5563] text-lg leading-relaxed mb-8">
               {t('AboutDescription')}
             </motion.p>
 
             {/* List */}
-            <motion.div variants={stagger} className="space-y-5">
+            <motion.div variants={stagger} className="space-y-4">
               {listItems.map((item, index) => (
                 <motion.div
                   key={index}
                   variants={fadeIn}
-                  className="flex items-center space-x-4 group cursor-pointer"
+                  className="flex items-center space-x-3 group"
                 >
-                  <div className="relative">
-                    <Square size={20} className="text-gray-600 group-hover:hidden" />
-                    <CheckSquare size={20} className="text-white hidden group-hover:block" />
-                  </div>
-                  <span className="text-gray-300 text-lg font-light tracking-wide group-hover:text-white transition-colors">
+                  <CheckCircle2 className="w-6 h-6 text-[#1F2937] flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                  <span className="text-[#374151] text-lg font-medium">
                     {item}
                   </span>
                 </motion.div>
@@ -118,7 +100,7 @@ const HomeSecThree = () => {
           </motion.div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 

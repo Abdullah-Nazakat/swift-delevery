@@ -26,8 +26,6 @@ const page = () => {
        <div className='mb-12'>
           <Faqs/>
        </div>
-     
-        
         {/* <HomeSecSeven/> */}
       {/* <HomeSecSix/> */}
       <Footer/>

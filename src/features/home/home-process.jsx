@@ -1,57 +1,90 @@
-'use client'
-import React from 'react'
 import Image from "next/image";
+// import { useTranslations } from "next-intl";
 import StepOne from "../../../public/step-1.png"
 import StepTwo from "../../../public/step-2.png"
 import StepThree from "../../../public/step-3.png"
 import StepFour from "../../../public/step-4.png"
-import { motion } from 'framer-motion'
+
+
+// const t = useTranslations('HomeProcess')
 
 const steps = [
-    { id: 1, title: "Order", description: "Place your request online.", image: StepOne },
-    { id: 2, title: "Pickup", description: "We collect your package.", image: StepTwo },
-    { id: 3, title: "Transit", description: "Real-time tracking.", image: StepThree },
-    { id: 4, title: "Arrival", description: "Safe delivery confirmed.", image: StepFour },
+    {
+        id: 1,
+        title: "Place Order",
+        description:
+            "Enter package details and select your preferred delivery option",
+        image: StepOne,
+    },
+    {
+        id: 2,
+        title: "Track Package",
+        description:
+            "Monitor your delivery in real-time with our GPS tracking system",
+        image: StepTwo,
+    },
+    {
+        id: 3,
+        title: "Fast Delivery",
+        description: "Our professional couriers deliver your package with care",
+        image: StepThree,
+    },
+    {
+        id: 4,
+        title: "Receive & Confirm",
+        description:
+            "Get your package delivered safely to your doorstep without any hassle.",
+        image: StepFour,
+    },
 ];
-
-const SimpleStep = ({ step, index }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.15 }}
-        viewport={{ once: true }}
-        className="flex flex-col items-center text-center group"
-    >
-        <div className="relative w-48 h-48 mb-8 rounded-full bg-white shadow-xl flex items-center justify-center border border-gray-100 group-hover:scale-105 transition-transform duration-300">
-            <div className="absolute top-0 right-0 w-10 h-10 bg-[#0071E3] rounded-full flex items-center justify-center text-white font-bold text-lg z-20">
-                {step.id}
-            </div>
-            <div className="w-32 h-32 relative overflow-hidden rounded-xl">
-                <Image src={step.image} alt={step.title} fill className="object-cover" />
-            </div>
-        </div>
-        <h3 className="text-2xl font-bold text-[#1D1D1F] mb-2">{step.title}</h3>
-        <p className="text-gray-500">{step.description}</p>
-    </motion.div>
-)
 
 export default function HomeProcess() {
     return (
-        <section className="relative py-24 md:py-32 bg-[#F5F5F7] z-10">
-            <div className="container mx-auto px-6">
-                <div className="text-center mb-20">
-                    <h2 className="text-4xl md:text-5xl font-bold text-[#1D1D1F] tracking-tight mb-4">
-                        How It Works
+        <section className="py-12 px-4 md:px-8 bg-[#FDE047]">
+            <div className="mx-auto">
+                <div className="text-center mb-12 animate-fadeIn">
+                    <h2 className="text-3xl md:text-5xl font-bold text-[#1e293b] mb-4">
+                        A Four Step Process
                     </h2>
-                    <p className="text-xl text-gray-500">Simple, transparent, and fast.</p>
+                    <p className="text-[#475569] text-lg max-w-2xl mx-auto">
+                        Comprehensive delivery solutions tailored to meet your unique
+                        requirements
+                    </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
-                    {/* Connecting Line */}
-                    <div className="hidden md:block absolute top-24 left-0 w-full h-0.5 bg-gray-200 -z-10" />
-
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {steps.map((step, index) => (
-                        <SimpleStep key={step.id} step={step} index={index} />
+                        <div
+                            key={step.id}
+                            className="bg-[#FFFBEB] rounded-3xl p-6 shadow-xl hover:scale-105 transition-transform duration-300 relative group animate-popIn"
+                            style={{ animationDelay: `${index * 0.2}s` }}
+                        >
+                            {/* Decorative Corner */}
+                            <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden rounded-tr-3xl z-0 pointer-events-none">
+                              <div
+  className="absolute top-[-10px] right-[-10px] w-20 h-20 [background:linear-gradient(135deg,#FF8904_0%,#FDC700_100%)] transform rotate-12 rounded-bl-3xl shadow-md"
+></div>
+
+                            </div>
+
+                            <div className="relative h-48 w-full mb-6 rounded-2xl overflow-hidden z-10 border-4 border-white shadow-sm">
+                                <Image
+                                    src={step.image}
+                                    alt={step.title}
+                                    fill
+                                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                />
+                            </div>
+
+                            <div className="text-center relative z-10">
+                                <h3 className="text-xl font-bold text-[#1e293b] mb-3">
+                                    {step.title}
+                                </h3>
+                                <p className="text-[#475569] text-sm leading-relaxed">
+                                    {step.description}
+                                </p>
+                            </div>
+                        </div>
                     ))}
                 </div>
             </div>

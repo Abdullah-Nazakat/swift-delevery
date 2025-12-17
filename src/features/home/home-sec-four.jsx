@@ -1,82 +1,175 @@
 'use client'
 import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { motion } from 'framer-motion'
+
+const InputField = React.memo(({ label, name, required, value, onChange, disabled }) => (
+  <div className="relative">
+    <input
+      type="text"
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={`${label}${required ? '*' : ''}`}
+      required={required}
+      disabled={disabled}
+      className="w-full h-12 px-4 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-[#FFFDF5] transition duration-300"
+    />
+  </div>
+))
+InputField.displayName = 'InputField'
 
 const HomeSecFour = () => {
   const t = useTranslations('HomePage')
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' })
+  const [formData, setFormData] = useState({
+    fullName: '',
+    phone: '',
+    loadType: '',
+    departure: '',
+    surrender: '',
+    internationalTrc: '',
+    height: '',
+    width: ''
+  })
 
-  const handleSubmit = (e) => {
+  const formFields = [
+    { key: "Form.FullName", name: "fullName", required: true },
+    { key: "Form.Phone", name: "phone", required: true },
+    { key: "Form.LoadType", name: "loadType", required: true },
+    { key: "Form.Departure", name: "departure", required: true },
+    { key: "Form.Surrender", name: "surrender", required: true },
+    { key: "Form.InternationalTrc", name: "internationalTrc", required: true },
+    { key: "Form.Height", name: "height", required: true },
+    { key: "Form.Width", name: "width", required: true }
+  ]
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setTimeout(() => {
+    setSubmitStatus({ type: '', message: '' })
+
+    try {
+      const response = await fetch('/api/shipment-quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSubmitStatus({
+          type: 'success',
+          message: data.message || t('FormSuccessMessage')
+        })
+        setFormData({
+          fullName: '',
+          phone: '',
+          loadType: '',
+          departure: '',
+          surrender: '',
+          internationalTrc: '',
+          height: '',
+          width: ''
+        })
+      } else {
+        setSubmitStatus({
+          type: 'error',
+          message: data.error || t('FormErrorMessage')
+        })
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: 'error',
+        message: t('FormNetworkError')
+      })
+    } finally {
       setIsSubmitting(false)
-      setSubmitStatus({ type: 'success', message: 'Tracking details sent.' })
-    }, 1500)
+    }
   }
 
   return (
-    <section className="relative py-24 md:py-32 bg-white z-10 overflow-hidden">
-      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+    <section
+      className="relative w-full py-20 font-sans text-white"
+      style={{ background: 'linear-gradient(90deg, #111828 0%, #1E2939 100%)' }}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-        {/* Left Text */}
-        <div className="order-2 md:order-1">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold text-[#1D1D1F] mb-6 tracking-tight"
-          >
-            Track Your <br />
-            <span className="text-[#0071E3]">Shipment.</span>
-          </motion.h2>
-          <p className="text-xl text-gray-500 mb-8 leading-relaxed">
-            Real-time updates at your fingertips. Know exactly where your package is, from pickup to delivery.
-          </p>
+          {/* Left */}
+          <div className="space-y-8">
+            <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+              {t('GetStartedSection.Title')}
+            </h2>
 
-          <div className="grid grid-cols-2 gap-8 mb-8">
-            <div>
-              <div className="text-3xl font-bold text-[#1D1D1F]">0.01s</div>
-              <div className="text-gray-400">Update Speed</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-[#1D1D1F]">100%</div>
-              <div className="text-gray-400">Visibility</div>
+            <p className="text-gray-300 text-lg max-w-lg leading-relaxed">
+              {t('GetStartedSection.Description')}
+            </p>
+
+            <div className="flex flex-wrap gap-4 pt-4">
+              <button className="bg-[#FDC748] hover:bg-[#e0b140] text-[#111828] font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 flex items-center gap-2">
+                {t('GetStartedSection.StartShipping')}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+
+              <button className="bg-transparent border border-gray-500 hover:border-white text-white font-medium py-3 px-8 rounded-full transition duration-300">
+                {t('GetStartedSection.ViewPricing')}
+              </button>
             </div>
           </div>
-        </div>
 
-        {/* Right Form Card */}
-        <div className="order-1 md:order-2">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="bg-[#F5F5F7] p-8 md:p-12 rounded-[2.5rem] relative"
-          >
-            <h3 className="text-2xl font-bold text-[#1D1D1F] mb-6">Track Package</h3>
+          {/* Right — Form */}
+          <div className="border border-white/20 rounded-2xl p-8 lg:p-10 relative">
+            <h3 className="text-3xl font-bold mb-8 text-white">
+              {t('QuoteSectionTitle')}
+            </h3>
 
+            {/* Status */}
             {submitStatus.message && (
-              <div className={`mb-4 p-3 rounded-xl text-sm ${submitStatus.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+              <div className={`mb-6 p-4 rounded-md text-center text-sm font-medium ${
+                submitStatus.type === 'success'
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-red-100 text-red-800'
+              }`}>
                 {submitStatus.message}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <input type="text" placeholder="Tracking ID" className="w-full h-14 px-6 rounded-2xl bg-white border-none shadow-sm outline-none focus:ring-2 focus:ring-[#0071E3] transition-all font-medium text-lg" />
-              <button className="w-full h-14 bg-[#0071E3] text-white rounded-2xl font-bold text-lg hover:bg-[#0060c2] transition-colors shadow-lg shadow-blue-500/20">
-                {isSubmitting ? "Searching..." : "Track Now"}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {formFields.map((field, index) => (
+                  <InputField
+                    key={index}
+                    label={t(field.key)}
+                    name={field.name}
+                    required={field.required}
+                    value={formData[field.name]}
+                    onChange={handleInputChange}
+                    disabled={isSubmitting}
+                  />
+                ))}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#FDC748] hover:bg-[#e0b140] disabled:opacity-70 text-[#111828] font-bold py-3 rounded-lg shadow-md transition duration-300 mt-2"
+              >
+                {isSubmitting ? t('FormSubmitting') : t('FormSubmit')}
               </button>
             </form>
-
-            {/* Simple Map Graphic */}
-            <div className="mt-8 h-48 rounded-2xl bg-white overflow-hidden relative opacity-50 grayscale">
-              <div className="absolute inset-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-cover bg-center" />
-              <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-[#0071E3] rounded-full animate-ping" />
-            </div>
-          </motion.div>
+          </div>
         </div>
-
       </div>
     </section>
   )

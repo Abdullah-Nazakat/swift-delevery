@@ -2,52 +2,73 @@
 import React from 'react'
 import { useTranslations } from 'next-intl'
 import { Truck, Package, Home, Clock } from 'lucide-react'
-import { motion } from 'framer-motion'
-
-const SimpleCard = ({ service, index }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      className="bg-white p-8 rounded-3xl border border-gray-100 hover:border-[#0071E3]/30 shadow-sm hover:shadow-xl transition-all duration-300 group"
-    >
-      <div className="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 text-[#1D1D1F] group-hover:bg-[#0071E3] group-hover:text-white transition-colors duration-300">
-        <service.Icon size={32} strokeWidth={1.5} />
-      </div>
-
-      <h3 className="text-xl font-bold text-[#1D1D1F] mb-3">{service.title}</h3>
-      <p className="text-gray-500 leading-relaxed text-base">{service.desc}</p>
-    </motion.div>
-  )
-}
 
 const HomeSecTwo = () => {
   const t = useTranslations('HomePage')
 
   const services = [
-    { id: 1, Icon: Truck, title: t('Service1Title'), desc: t('Service1Desc') },
-    { id: 2, Icon: Package, title: t('Service2Title'), desc: t('Service2Desc') },
-    { id: 3, Icon: Home, title: t('Service3Title'), desc: t('Service3Desc') },
-    { id: 4, Icon: Clock, title: t('Service4Desc'), desc: t('Service4Desc') },
+    {
+      id: 1,
+      Icon: Truck,
+      title: t('Service1Title'),
+      desc: t('Service1Desc'),
+    },
+    {
+      id: 2,
+      Icon: Package,
+      title: t('Service2Title'),
+      desc: t('Service2Desc'),
+    },
+    {
+      id: 3,
+      Icon: Home,
+      title: t('Service3Title'),
+      desc: t('Service3Desc'),
+    },
+    {
+      id: 4,
+      Icon: Clock,
+      title: t('Service4Title'),
+      desc: t('Service4Desc'),
+    },
   ]
 
   return (
-    <section className="w-full py-24 md:py-32 px-6 bg-white relative z-10">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-[#1D1D1F] tracking-tight mb-6">
-            {t('OfferTitle') || "Our Services"}
-          </h2>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-            {t('OfferSubtitle') || "Comprehensive delivery solutions for every need."}
-          </p>
-        </div>
+    <section className="w-full py-12 px-4 md:px-8 overflow-hidden">
+      <div className=" mx-auto text-center">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 animate-fadeIn">
+          {t('OfferTitle')}
+        </h2>
+        <p className="text-slate-600 text-lg max-w-2xl mx-auto mb-16 animate-slideUp">
+          {t('OfferSubtitle')}
+        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 cursor-pointer sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
-            <SimpleCard key={service.id} service={service} index={index} />
+            <div
+              key={service.id}
+              className="group relative p-8 border border-slate-200 rounded-2xl bg-[#fffef5] 
+              hover:-translate-y-2 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] 
+              transition-all duration-300 text-left flex flex-col items-start
+              animate-fadeInUp"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="w-16 h-16 bg-[#FDE047] rounded-2xl flex items-center justify-center mb-6 
+                transition-transform duration-300 group-hover:scale-120 group-hover:rotate-10 shadow-sm">
+                <service.Icon size={32} className="text-slate-900" strokeWidth={1.5} />
+              </div>
+
+              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-[#FDE047] transition-colors duration-300">
+                {service.title}
+              </h3>
+
+              <p className="text-slate-600 leading-relaxed text-sm md:text-base">
+                {service.desc}
+              </p>
+
+              {/* Decorative border bottom */}
+              {/* <div className="absolute bottom-0 left-0 w-0 h-1 bg-[#FDE047] transition-all duration-500 group-hover:w-full rounded-b-2xl"></div> */}
+            </div>
           ))}
         </div>
       </div>

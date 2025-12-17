@@ -12,47 +12,43 @@ const images = [Delivery, Truck, Express, Logistics, Product, Quick]
 
 const HomeSecSix = () => {
   return (
-    <section className="w-full py-12 bg-[#050505] border-y border-white/10 overflow-hidden relative">
-      <div className="absolute inset-0 bg-white/5 opacity-50 mix-blend-overlay pointer-events-none"></div>
-
-      {/* Ticker Tape Lines */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-
+    <section className="w-full py-10 bg-white/5 overflow-hidden">
       <div className="relative flex items-center">
+        {/* Animated Track */}
         <div className="flex animate-scrollX hover:[animation-play-state:paused]">
-          {[...images, ...images, ...images].map((img, i) => (
+          {[...images, ...images].map((img, i) => (
             <div
               key={i}
-              className="flex-shrink-0 mx-12 flex items-center justify-center grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+              className="flex-shrink-0 mx-10 flex items-center justify-center"
             >
               <Image
                 src={img}
-                alt={`Partner ${i}`}
-                width={70}
-                height={70}
-                className="object-contain"
+                alt={`Logo ${i}`}
+                width={50}
+                height={50}
+                className="object-contain opacity-90 hover:opacity-100 transition duration-300"
               />
             </div>
           ))}
         </div>
       </div>
 
+      {/* Custom Animation */}
       <style jsx>{`
         @keyframes scrollX {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-33.33%); }
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
         }
         .animate-scrollX {
           display: flex;
           width: max-content;
-          animation: scrollX 40s linear infinite;
+          animation: scrollX 20s linear infinite;
         }
       `}</style>
-
-      <div className="absolute top-2 left-4 text-[10px] font-mono text-gray-700 tracking-[0.2em] uppercase hidden md:block">
-        Strategic_Alliances // Verified
-      </div>
     </section>
   )
 }

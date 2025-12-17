@@ -1,211 +1,146 @@
 'use client'
-import React, { useRef, useMemo, useEffect } from 'react'
+
+import React, { useRef, useEffect, memo, Suspense } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, Float, useScroll } from '@react-three/drei'
-import { motion } from 'framer-motion'
+import { Environment, Float, PerspectiveCamera, ContactShadows } from '@react-three/drei'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { ArrowUpRight } from 'lucide-react'
 import * as THREE from 'three'
 
-// --- The Global Scroll Drone ---
-// This component reads the global scroll position and moves the drone
-// --- The Global Scroll Drone ---
-// This component reads the global scroll position AND mouse cursor to move the drone
-const ScrollDrone = () => {
-  const droneRef = useRef()
-  const { viewport } = useThree() // Get viewport size for mouse scaling
+// ... DroneModel component remains the same ...
+const DroneModel = memo(() => {
+  const groupRef = useRef()
+  const bladeRefs = useRef([])
+  const lightRef = useRef()
+  const { viewport } = useThree()
 
-  // We'll use a specific ref to track scroll and mouse without re-rendering
-  const scrollData = useRef({ y: 0 })
-  const mouseData = useRef({ x: 0, y: 0 })
+  const state = useRef({
+    scroll: 0,
+    mouse: new THREE.Vector2(0, 0),
+    targetPos: new THREE.Vector3(0, 1, 0)
+  })
 
   useEffect(() => {
     const handleScroll = () => {
-      // Calculate scroll progress (0 to 1)
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      const safeMax = maxScroll > 0 ? maxScroll : 1
-      scrollData.current.y = window.scrollY / safeMax
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
+      state.current.scroll = window.scrollY / (scrollHeight || 1)
     }
-
     const handleMouseMove = (e) => {
-      // Normalize mouse -1 to 1
-      mouseData.current.x = (e.clientX / window.innerWidth) * 2 - 1
-      mouseData.current.y = -(e.clientY / window.innerHeight) * 2 + 1
+      state.current.mouse.x = (e.clientX / window.innerWidth) * 2 - 1
+      state.current.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
     }
-
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('mousemove', handleMouseMove)
-
     return () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [])
 
-  useFrame((state) => {
-    if (!droneRef.current) return
-
-    // 1. SCROLL INFLUENCE (Base Y position)
-    // Moves from Y=2 (top) to Y=-8 (bottom)
-    const scrollBaseY = 2 - (scrollData.current.y * 12)
-
-    // 2. MOUSE INFLUENCE (X/Y Offset)
-    // Convert normalized pointer (-1 to 1) to world units
-    // We scale by viewport to make movement feel 1:1 with cursor
-    const mouseX = (mouseData.current.x * viewport.width) / 2
-    const mouseY = (mouseData.current.y * viewport.height) / 2
-
-    // Target Position = Scroll Base + Mouse Offset
-    // We divide mouse influence to make it subtle, not erratic
-    const targetX = mouseX * 0.5
-    const targetY = scrollBaseY + (mouseY * 0.5)
-
-    // Smoothly Interpolate (Lerp) to target
-    droneRef.current.position.x += (targetX - droneRef.current.position.x) * 0.05
-    droneRef.current.position.y += (targetY - droneRef.current.position.y) * 0.05
-
-    // 3. DYNAMIC ROTATION (Tilt based on movement)
-    // Bank left/right based on X distance to target
-    const tiltX = (targetX - droneRef.current.position.x)
-    const tiltY = (targetY - droneRef.current.position.y)
-
-    droneRef.current.rotation.z = -tiltX * 1.5 // Bank
-    droneRef.current.rotation.x = tiltY * 1.5   // Pitch
-
-    // Continuous subtle yaw spin + slight mouse yaw
-    droneRef.current.rotation.y += 0.005 + (mouseX * 0.001)
-
-    // Idle Float Animation (Sine wave)
-    const t = state.clock.getElapsedTime()
-    droneRef.current.position.y += Math.sin(t * 3) * 0.002
+  useFrame((clockState, delta) => {
+    if (!groupRef.current) return
+    const { mouse, scroll, targetPos } = state.current
+    const baseY = 1.5 - scroll * 10
+    const xTarget = (mouse.x * viewport.width) * 0.25
+    const yTarget = baseY + (mouse.y * viewport.height) * 0.2
+    targetPos.x = THREE.MathUtils.lerp(groupRef.current.position.x, xTarget, 0.07)
+    targetPos.y = THREE.MathUtils.lerp(groupRef.current.position.y, yTarget, 0.07)
+    groupRef.current.position.set(targetPos.x, targetPos.y, 0)
+    groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, -mouse.x * 0.6, 0.07)
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, (mouse.y * 0.3) + 0.2, 0.07)
+    bladeRefs.current.forEach((blade) => { if (blade) blade.rotation.y += delta * 30 })
+    if (lightRef.current) lightRef.current.intensity = Math.sin(clockState.clock.elapsedTime * 5) * 1.5 + 1.5
   })
 
   return (
-    <group ref={droneRef} position={[0, 2, 0]} rotation={[0.2, 0, 0]}>
-      {/* --- DRONE BODY (Black Box) --- */}
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={[1, 0.2, 1]} />
-        <meshStandardMaterial color="#111111" roughness={0.4} metalness={0.6} />
-      </mesh>
-
-      {/* --- PACKAGE (Yellow Box) --- */}
-      <mesh position={[0, -0.5, 0]} castShadow>
-        <boxGeometry args={[0.6, 0.6, 0.6]} />
-        <meshStandardMaterial color="#FBB016" roughness={0.8} />
-        {/* Package Tape/Detail */}
-        <mesh position={[0, 0, 0.31]}>
-          <planeGeometry args={[0.6, 0.1]} />
-          <meshBasicMaterial color="#d99000" />
-        </mesh>
-      </mesh>
-
-      {/* --- GREEN LIGHT (Sphere) --- */}
-      <mesh position={[0, 0.15, 0]}>
-        <sphereGeometry args={[0.1, 16, 16]} />
-        <meshBasicMaterial color="#00FF00" toneMapped={false} />
-      </mesh>
-      <pointLight position={[0, 0.3, 0]} distance={2} intensity={2} color="#00FF00" />
-
-      {/* --- ROTORS (4 Grey Discs) --- */}
-      {[
-        [-0.8, 0.8], [0.8, 0.8],
-        [-0.8, -0.8], [0.8, -0.8]
-      ].map((pos, i) => (
-        <group key={i} position={[pos[0], 0.1, pos[1]]}>
-          {/* Rotor Blade */}
-          <mesh>
-            <cylinderGeometry args={[0.6, 0.6, 0.02, 32]} />
-            <meshStandardMaterial color="#666666" transparent opacity={0.9} />
-          </mesh>
-          {/* Rotor Motor Connector */}
-          <mesh position={[(-pos[0] / 2), 0, (-pos[1] / 2)]} rotation={[0, Math.atan2(pos[0], pos[1]), 0]}>
-            <boxGeometry args={[0.1, 0.05, 1]} />
-            <meshStandardMaterial color="#222" />
+    <group ref={groupRef}>
+      <mesh castShadow><cylinderGeometry args={[0.5, 0.6, 0.2, 8]} /><meshStandardMaterial color="#111" metalness={0.9} roughness={0.1} /></mesh>
+      <pointLight ref={lightRef} position={[0, 0.1, 0.4]} color="#00f2ff" distance={3} />
+      <mesh position={[0, 0.05, 0.4]}><sphereGeometry args={[0.06, 16, 16]} /><meshBasicMaterial color="#00f2ff" /></mesh>
+      <group rotation={[0, Math.PI / 4, 0]}>
+        <mesh castShadow><boxGeometry args={[2.4, 0.07, 0.07]} /><meshStandardMaterial color="#222" /></mesh>
+        <mesh castShadow rotation={[0, Math.PI / 2, 0]}><boxGeometry args={[2.4, 0.07, 0.07]} /><meshStandardMaterial color="#222" /></mesh>
+      </group>
+      {[[-0.85, 0, 0.85], [0.85, 0, 0.85], [-0.85, 0, -0.85], [0.85, 0, -0.85]].map((pos, i) => (
+        <group key={i} position={pos}>
+          <mesh castShadow><cylinderGeometry args={[0.15, 0.15, 0.2, 16]} /><meshStandardMaterial color="#000" /></mesh>
+          <mesh ref={(el) => (bladeRefs.current[i] = el)} position={[0, 0.12, 0]}>
+            <boxGeometry args={[1, 0.01, 0.07]} /><meshStandardMaterial color="#555" transparent opacity={0.6} />
           </mesh>
         </group>
       ))}
+      <mesh position={[0, -0.5, 0]} castShadow><boxGeometry args={[0.7, 0.7, 0.7]} /><meshStandardMaterial color="#FBB016" roughness={0.6} metalness={0.1} /></mesh>
     </group>
   )
-}
+})
 
-const HomeHero = () => {
+DroneModel.displayName = 'DroneModel'
+
+export default function HomeHero() {
   const t = useTranslations('HomePage')
 
   return (
-    <section className="relative w-full h-screen bg-[#F5F5F7] overflow-hidden flex flex-col items-center justify-center">
+    <section className="relative w-full min-h-screen bg-[#fcd34d] flex items-center justify-center p-4 md:p-12 overflow-hidden">
 
-      {/* 
-          GLOBAL DRONE LAYER 
-          Positioned Fixed so it stays on screen forever as user scrolls 
-      */}
-      <div className="fixed inset-0 z-30 w-full h-full" style={{ pointerEvents: 'none' }}>
-        <Canvas
-          className="pointer-events-none"
-          style={{ pointerEvents: 'none' }}
-          events={null}
-          camera={{ position: [0, 0, 6], fov: 45 }}
-          shadows
-        >
-          <ambientLight intensity={1} />
-          <spotLight position={[5, 10, 5]} intensity={1.5} penumbra={1} castShadow />
-          <Environment preset="city" />
-          <ScrollDrone />
+      {/* 1. BACKGROUND CANVAS: Set to z-50 to float on top, pointer-events-none allows clicks to pass through to UI */}
+      <div className="fixed inset-0 z-50 pointer-events-none" aria-hidden="true">
+        <Canvas shadows gl={{ antialias: true, alpha: true }} style={{ pointerEvents: 'none' }}>
+          <PerspectiveCamera makeDefault position={[0, 0, 8]} fov={35} />
+          <ambientLight intensity={0.5} />
+          <spotLight position={[10, 15, 10]} angle={0.3} penumbra={1} intensity={2} castShadow />
+          <Suspense fallback={null}>
+            <Environment preset="city" />
+            <Float speed={2.5} rotationIntensity={0.4} floatIntensity={0.7}>
+              <DroneModel />
+            </Float>
+            <ContactShadows position={[0, -3.8, 0]} opacity={0.3} scale={20} blur={2.5} far={4.5} />
+          </Suspense>
         </Canvas>
       </div>
 
-      {/* Hero Content - Simplified & Clean */}
-      <div className="relative z-10 text-center space-y-8 px-6 mt-[-10vh]">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="inline-block px-4 py-2 rounded-full bg-blue-50 text-[#0071E3] font-bold text-sm uppercase tracking-widest mb-6 border border-blue-100">
-            Next Gen Logistics
+      {/* 2. UI CARD: Elevated to z-10 with pointer-events-auto to make content clickable */}
+      <main className="relative z-10 w-full grid grid-cols-1 md:grid-cols-2 bg-white/40 backdrop-blur-3xl rounded-[3rem] border border-white/50 shadow-2xl overflow-hidden pointer-events-auto">
+
+        {/* 3. CONTENT CONTAINER: Set pointer-events-auto to make text/buttons clickable */}
+        <div className="flex flex-col justify-center p-10 md:p-24 space-y-10 pointer-events-auto">
+          <div className="space-y-6">
+            <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.9]">
+              {t('HeroTitle')}
+            </h1>
+            <p className="text-slate-800 text-lg md:text-2xl max-w-sm font-medium leading-relaxed opacity-90">
+              {t('HeroDescription')}
+            </p>
           </div>
 
-          <h1 className="text-5xl md:text-8xl font-black text-[#1D1D1F] tracking-tight leading-tight">
-            Swift <br />
-            <span className="text-[#0071E3]">Delivery.</span>
-          </h1>
-        </motion.div>
+          <div className="flex flex-col sm:flex-row gap-5 pt-4">
+            <Link
+              href="/about"
+              className="px-12 py-5 bg-slate-900 text-white rounded-full font-bold text-center hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-xl"
+            >
+              {t('GetStarted')}
+            </Link>
+            <Link
+              href="/services-02"
+              className="px-12 py-5 border-2 border-slate-900 text-slate-900 rounded-full font-bold text-center hover:bg-slate-900 hover:text-white transition-all active:scale-95"
+            >
+              {t('LearnMore')}
+            </Link>
+          </div>
+        </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-xl md:text-2xl text-gray-500 max-w-xl mx-auto font-medium"
-        >
-          Fast, reliable, and intelligent shipping solutions for the modern world.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <button className="bg-[#1D1D1F] text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-black transition-all shadow-xl hover:shadow-2xl flex items-center justify-center gap-2">
-            Get Started <ArrowUpRight />
-          </button>
-          <button className="bg-white text-[#1D1D1F] px-8 py-4 rounded-full text-lg font-bold border border-gray-200 hover:bg-gray-50 transition-colors">
-            Track Order
-          </button>
-        </motion.div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 text-gray-400 text-sm font-medium animate-bounce"
-      >
-        Scroll to Explore
-      </motion.div>
-
+        {/* Right Section (Hero Image) */}
+        <div className="relative overflow-hidden pointer-events-none">
+          <Image
+            src="/swiftdeliver.png"
+            alt="Delivery Service"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent" />
+        </div>
+      </main>
     </section>
   )
 }
-
-export default HomeHero
