@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 const testimonials = [
@@ -48,37 +48,50 @@ export default function Testimonials() {
 
     const variants = {
         enter: (direction) => ({
-            x: direction > 0 ? 100 : -100,
-            opacity: 0
+            x: direction > 0 ? 50 : -50,
+            opacity: 0,
+            scale: 0.95
         }),
         center: {
             zIndex: 1,
             x: 0,
-            opacity: 1
+            opacity: 1,
+            scale: 1
         },
         exit: (direction) => ({
             zIndex: 0,
-            x: direction < 0 ? 100 : -100,
-            opacity: 0
+            x: direction < 0 ? 50 : -50,
+            opacity: 0,
+            scale: 0.95
         })
     }
 
     return (
-        <section className="py-24  overflow-hidden">
-            <div className="container mx-auto px-4">
+        <section className="py-24 bg-[#050505] border-t border-white/10 relative overflow-hidden">
+            {/* Background Tech Elements */}
+            <div className="absolute inset-0 tech-grid opacity-10 pointer-events-none"></div>
+
+            <div className="container mx-auto px-4 relative z-10">
                 {/* Header */}
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold text-[#0B1221] mb-4 tracking-tight uppercase">
-                        {t('TestimonialsTitle') || 'TESTIMONIALS'}
+                <div className="flex flex-col items-center text-center mb-20">
+                    <div className="flex items-center gap-2 mb-4 opacity-70">
+                        <span className="w-1 h-1 bg-white rounded-full"></span>
+                        <span className="w-1 h-1 bg-white rounded-full"></span>
+                        <span className="w-1 h-1 bg-white rounded-full"></span>
+                        <span className="text-xs font-mono text-gray-400 uppercase tracking-[0.2em]">User Feedback Logs</span>
+                    </div>
+
+                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tighter uppercase leading-none">
+                        {t('TestimonialsTitle') || 'MISSION REPORTS'}
                     </h2>
-                    <p className="text-[#4B5563] text-lg max-w-2xl mx-auto">
-                        {t('TestimonialsSubtitle') || "Don't just take our word for it - hear from our satisfied customers"}
+                    <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+                        {t('TestimonialsSubtitle') || "Verified communications from our strategic partners."}
                     </p>
                 </div>
 
                 {/* Carousel Area */}
-                <div className="relative max-w-4xl mx-auto">
-                    <div className="relative h-[450px] md:h-[350px] flex items-center justify-center">
+                <div className="relative max-w-5xl mx-auto">
+                    <div className="relative h-[500px] md:h-[400px] flex items-center justify-center">
                         <AnimatePresence initial={false} custom={direction} mode="wait">
                             <motion.div
                                 key={currentIndex}
@@ -93,41 +106,61 @@ export default function Testimonials() {
                                 }}
                                 className="absolute w-full"
                             >
-                                <div className="bg-[#FDE047] rounded-2xl p-8 md:p-12 shadow-xl mx-4 md:mx-0">
-                                    <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                                <div className="bg-[#0A0A0C] border border-white/10 p-8 md:p-12 relative overflow-hidden group">
+                                    {/* Decorative Corners */}
+                                    <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-white/50"></div>
+                                    <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-white/50"></div>
+                                    <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-white/50"></div>
+                                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-white/50"></div>
+
+                                    <div className="flex flex-col md:flex-row items-center gap-10">
                                         {/* Image */}
                                         <div className="relative shrink-0">
-                                            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white/30 shadow-md">
+                                            <div className="relative w-28 h-28 md:w-40 md:h-40 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
                                                 <img
                                                     src={testimonials[currentIndex].image}
                                                     alt={testimonials[currentIndex].name}
                                                     className="w-full h-full object-cover"
                                                 />
+                                                {/* Tech Overlay */}
+                                                <div className="absolute bottom-2 left-2 z-20 flex gap-1">
+                                                    <div className="w-1 h-1 bg-white"></div>
+                                                    <div className="w-1 h-1 bg-white/50"></div>
+                                                </div>
                                             </div>
                                         </div>
 
                                         {/* Content */}
                                         <div className="flex-1 text-center md:text-left">
-                                            {/* Stars */}
-                                            <div className="flex justify-center md:justify-start gap-1 mb-4">
+                                            {/* Stars Tech Style */}
+                                            <div className="flex justify-center md:justify-start gap-1 mb-6">
                                                 {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                                                    <Star key={i} className="w-5 h-5 fill-white text-white" />
+                                                    <div key={i} className="w-1 h-4 bg-white/80"></div>
                                                 ))}
+                                                <span className="ml-2 text-xs font-mono text-gray-500 self-center">RATING: MAX</span>
                                             </div>
 
+                                            <Quote className="w-8 h-8 text-white/20 mb-4 mx-auto md:mx-0" />
+
                                             {/* Quote */}
-                                            <blockquote className="text-[#0B1221] text-lg md:text-xl italic mb-6 leading-relaxed">
+                                            <blockquote className="text-white text-xl md:text-2xl font-light mb-8 leading-relaxed">
                                                 "{testimonials[currentIndex].quote}"
                                             </blockquote>
 
                                             {/* Author */}
-                                            <div>
-                                                <h3 className="font-bold text-[#0B1221] text-lg">
-                                                    {testimonials[currentIndex].name}
-                                                </h3>
-                                                <p className="text-[#0B1221]/70 font-medium">
-                                                    {testimonials[currentIndex].role}
-                                                </p>
+                                            <div className="border-t border-white/10 pt-4 flex flex-col md:flex-row justify-between items-center gap-2">
+                                                <div>
+                                                    <h3 className="font-bold text-white text-lg uppercase tracking-wide">
+                                                        {testimonials[currentIndex].name}
+                                                    </h3>
+                                                    <p className="text-gray-500 font-mono text-sm uppercase">
+                                                        {testimonials[currentIndex].role}
+                                                    </p>
+                                                </div>
+                                                <div className="text-xs font-mono text-gray-600 uppercase">
+                                                    // ID: {1000 + testimonials[currentIndex].id}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -137,26 +170,8 @@ export default function Testimonials() {
                     </div>
 
                     {/* Navigation Controls */}
-                    <div className="flex flex-col items-center gap-6 mt-8">
-                        {/* Arrows */}
-                        <div className="flex gap-4">
-                            <button
-                                onClick={handlePrev}
-                                className="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-[#0B1221] hover:bg-[#FDE047] hover:scale-110 transition-all duration-300 group cursor-pointer"
-                                aria-label="Previous testimonial"
-                            >
-                                <ChevronLeft className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform" />
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                className="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-[#0B1221] hover:bg-[#FDE047] hover:scale-110 transition-all duration-300 group cursor-pointer"
-                                aria-label="Next testimonial"
-                            >
-                                <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
-                            </button>
-                        </div>
-
-                        {/* Dots */}
+                    <div className="flex items-center justify-between mt-8 md:px-0">
+                        {/* Dots / Indicators */}
                         <div className="flex gap-2">
                             {testimonials.map((_, idx) => (
                                 <button
@@ -165,13 +180,31 @@ export default function Testimonials() {
                                         setDirection(idx > currentIndex ? 1 : -1)
                                         setCurrentIndex(idx)
                                     }}
-                                    className={`transition-all duration-300 rounded-full h-2 ${idx === currentIndex
-                                            ? 'w-8 bg-[#0B1221]'
-                                            : 'w-2 bg-[#0B1221]/30 hover:bg-[#0B1221]/50'
+                                    className={`transition-all duration-300 h-1 ${idx === currentIndex
+                                        ? 'w-8 bg-white'
+                                        : 'w-2 bg-white/20 hover:bg-white/40'
                                         }`}
                                     aria-label={`Go to testimonial ${idx + 1}`}
                                 />
                             ))}
+                        </div>
+
+                        {/* Arrows */}
+                        <div className="flex gap-4">
+                            <button
+                                onClick={handlePrev}
+                                className="group w-12 h-12 border border-white/10 hover:border-white/50 hover:bg-white/5 flex items-center justify-center text-white transition-all duration-300"
+                                aria-label="Previous testimonial"
+                            >
+                                <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                className="group w-12 h-12 border border-white/10 hover:border-white/50 hover:bg-white/5 flex items-center justify-center text-white transition-all duration-300"
+                                aria-label="Next testimonial"
+                            >
+                                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </button>
                         </div>
                     </div>
                 </div>

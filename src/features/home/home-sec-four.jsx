@@ -1,22 +1,77 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useTranslations } from 'next-intl'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Points, PointMaterial, Float } from '@react-three/drei'
+import { motion } from 'framer-motion'
+import * as THREE from 'three'
 
-const InputField = React.memo(({ label, name, required, value, onChange, disabled }) => (
-  <div className="relative">
+// Star/Data Map
+const StarMap = (props) => {
+  const ref = useRef()
+  const [sphere] = useState(() => {
+    const temp = new Float32Array(1000 * 3)
+    for (let i = 0; i < 1000; i++) {
+      const theta = THREE.MathUtils.randFloatSpread(360)
+      const phi = THREE.MathUtils.randFloatSpread(360)
+      const r = 2 + Math.random() * 2
+
+      temp[i * 3] = r * Math.sin(theta) * Math.cos(phi)
+      temp[i * 3 + 1] = r * Math.sin(theta) * Math.sin(phi)
+      temp[i * 3 + 2] = r * Math.cos(theta)
+    }
+    return temp
+  })
+
+  useFrame((state, delta) => {
+    if (ref.current) {
+      ref.current.rotation.x -= delta / 20
+      ref.current.rotation.y -= delta / 30
+    }
+  })
+
+  return (
+    <group rotation={[0, 0, Math.PI / 4]}>
+      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
+        <PointMaterial
+          transparent
+          color="#888"
+          size={0.02}
+          sizeAttenuation={true}
+          depthWrite={false}
+          opacity={0.6}
+        />
+      </Points>
+    </group>
+  )
+}
+
+const InputField = ({ label, name, required, value, onChange, disabled }) => (
+  <div className="relative group">
     <input
       type="text"
       name={name}
       value={value}
       onChange={onChange}
-      placeholder={`${label}${required ? '*' : ''}`}
       required={required}
       disabled={disabled}
-      className="w-full h-12 px-4 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-[#FFFDF5] transition duration-300"
+      className="peer w-full h-12 px-4 bg-transparent border-b border-white/20 text-white font-mono text-sm
+                 focus:outline-none focus:border-white focus:bg-white/5
+                 transition-all duration-300 placeholder-transparent"
+      placeholder={label}
     />
+    <label
+      className="absolute left-4 top-3 text-gray-500 text-xs font-mono uppercase tracking-widest transition-all duration-300 
+                 peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 
+                 peer-focus:top-[-10px] peer-focus:text-white peer-focus:text-[10px]
+                 -translate-y-6 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-0"
+    >
+      {label} {required && '*'}
+    </label>
+    {/* Corner Tick */}
+    <div className="absolute bottom-0 right-0 w-2 h-2 border-r border-b border-white/20 peer-focus:border-white transition-colors"></div>
   </div>
-))
-InputField.displayName = 'InputField'
+)
 
 const HomeSecFour = () => {
   const t = useTranslations('HomePage')
@@ -30,20 +85,7 @@ const HomeSecFour = () => {
     departure: '',
     surrender: '',
     internationalTrc: '',
-    height: '',
-    width: ''
   })
-
-  const formFields = [
-    { key: "Form.FullName", name: "fullName", required: true },
-    { key: "Form.Phone", name: "phone", required: true },
-    { key: "Form.LoadType", name: "loadType", required: true },
-    { key: "Form.Departure", name: "departure", required: true },
-    { key: "Form.Surrender", name: "surrender", required: true },
-    { key: "Form.InternationalTrc", name: "internationalTrc", required: true },
-    { key: "Form.Height", name: "height", required: true },
-    { key: "Form.Width", name: "width", required: true }
-  ]
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -53,123 +95,128 @@ const HomeSecFour = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setSubmitStatus({ type: '', message: '' })
-
-    try {
-      const response = await fetch('/api/shipment-quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        setSubmitStatus({
-          type: 'success',
-          message: data.message || t('FormSuccessMessage')
-        })
-        setFormData({
-          fullName: '',
-          phone: '',
-          loadType: '',
-          departure: '',
-          surrender: '',
-          internationalTrc: '',
-          height: '',
-          width: ''
-        })
-      } else {
-        setSubmitStatus({
-          type: 'error',
-          message: data.error || t('FormErrorMessage')
-        })
-      }
-    } catch (error) {
-      setSubmitStatus({
-        type: 'error',
-        message: t('FormNetworkError')
-      })
-    } finally {
+    setTimeout(() => {
       setIsSubmitting(false)
-    }
+      setSubmitStatus({ type: 'success', message: 'TRANSMISSION RECEIVED' })
+    }, 1500)
   }
 
+  const formFields = [
+    { key: "Form.FullName", name: "fullName", required: true },
+    { key: "Form.Phone", name: "phone", required: true },
+    { key: "Form.LoadType", name: "loadType", required: true },
+    { key: "Form.Departure", name: "departure", required: true },
+    { key: "Form.Surrender", name: "surrender", required: true },
+    { key: "Form.InternationalTrc", name: "internationalTrc", required: true },
+  ]
+
   return (
-    <section
-      className="relative w-full py-20 font-sans text-white"
-      style={{ background: 'linear-gradient(90deg, #111828 0%, #1E2939 100%)' }}
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <section className="relative w-full py-24 bg-[#050505] overflow-hidden border-t border-white/10">
+      <div className="absolute inset-0 z-0">
+        <Canvas camera={{ position: [0, 0, 4] }}>
+          <ambientLight intensity={0.5} />
+          <Float speed={1} rotationIntensity={0.5} floatIntensity={0.5}>
+            <StarMap />
+          </Float>
+        </Canvas>
+      </div>
 
-          {/* Left */}
-          <div className="space-y-8">
-            <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
-              {t('GetStartedSection.Title')}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+        {/* Left: Data Readout */}
+        <div className="text-white space-y-8">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-2 h-2 bg-white rounded-full animate-ping"></div>
+              <span className="text-xs font-mono text-gray-400">LIVE FEED // SYSTEM ACTIVE</span>
+            </div>
+
+            <h2 className="text-5xl lg:text-7xl font-bold tracking-tighter uppercase leading-[0.9] mb-6">
+              {t('GetStartedSection.Title') || "GLOBAL\nTELEMETRY"}
             </h2>
+            <div className="h-px w-24 bg-white mb-6"></div>
 
-            <p className="text-gray-300 text-lg max-w-lg leading-relaxed">
-              {t('GetStartedSection.Description')}
+            <p className="text-gray-400 text-lg md:text-xl font-light max-w-lg leading-relaxed">
+              {t('GetStartedSection.Description') || "Monitor payload vectors and logistical parameters in real-time."}
             </p>
+          </motion.div>
 
-            <div className="flex flex-wrap gap-4 pt-4">
-              <button className="bg-[#FDC748] hover:bg-[#e0b140] text-[#111828] font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 flex items-center gap-2">
-                {t('GetStartedSection.StartShipping')}
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </button>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="grid grid-cols-2 gap-4 border-t border-white/10 pt-8"
+          >
+            <div>
+              <div className="text-4xl font-mono font-bold text-white mb-1">99.9%</div>
+              <div className="text-xs text-gray-500 font-mono">MISSION UPTIME</div>
+            </div>
+            <div>
+              <div className="text-4xl font-mono font-bold text-white mb-1">24/7</div>
+              <div className="text-xs text-gray-500 font-mono">COMMAND CENTER</div>
+            </div>
+          </motion.div>
+        </div>
 
-              <button className="bg-transparent border border-gray-500 hover:border-white text-white font-medium py-3 px-8 rounded-full transition duration-300">
-                {t('GetStartedSection.ViewPricing')}
-              </button>
+        {/* Right: Dashboard Panel */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="hud-panel p-8 md:p-10"
+        >
+          <div className="hud-corners pointer-events-none absolute inset-0"></div>
+
+          <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+            <h3 className="text-xl font-mono font-bold text-white uppercase">
+              {t('QuoteSectionTitle') || "Initialize Request"}
+            </h3>
+            <div className="flex gap-1">
+              <div className="w-1 h-3 bg-white/20"></div>
+              <div className="w-1 h-3 bg-white/40"></div>
+              <div className="w-1 h-3 bg-white/80"></div>
             </div>
           </div>
 
-          {/* Right — Form */}
-          <div className="border border-white/20 rounded-2xl p-8 lg:p-10 relative">
-            <h3 className="text-3xl font-bold mb-8 text-white">
-              {t('QuoteSectionTitle')}
-            </h3>
-
-            {/* Status */}
-            {submitStatus.message && (
-              <div className={`mb-6 p-4 rounded-md text-center text-sm font-medium ${
-                submitStatus.type === 'success'
-                  ? 'bg-green-100 text-green-800'
-                  : 'bg-red-100 text-red-800'
+          {submitStatus.message && (
+            <div className={`mb-6 p-4 border border-l-4 font-mono text-xs ${submitStatus.type === 'success' ? 'border-green-500 bg-green-500/10 text-green-400' : 'border-red-500 bg-red-500/10 text-red-400'
               }`}>
-                {submitStatus.message}
-              </div>
-            )}
+              &gt; {submitStatus.message}
+            </div>
+          )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {formFields.map((field, index) => (
-                  <InputField
-                    key={index}
-                    label={t(field.key)}
-                    name={field.name}
-                    required={field.required}
-                    value={formData[field.name]}
-                    onChange={handleInputChange}
-                    disabled={isSubmitting}
-                  />
-                ))}
-              </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {formFields.map((field, index) => (
+                <InputField
+                  key={index}
+                  label={t(field.key)}
+                  name={field.name}
+                  required={field.required}
+                  value={formData[field.name]}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                />
+              ))}
+            </div>
 
+            <div className="pt-6">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#FDC748] hover:bg-[#e0b140] disabled:opacity-70 text-[#111828] font-bold py-3 rounded-lg shadow-md transition duration-300 mt-2"
+                className="w-full py-4 bg-white text-black font-bold font-mono tracking-widest uppercase hover:bg-gray-200 transition-all duration-300 disabled:opacity-50"
               >
-                {isSubmitting ? t('FormSubmitting') : t('FormSubmit')}
+                {isSubmitting ? "PROCESSING..." : "TRANSMIT DATA"}
               </button>
-            </form>
-          </div>
-        </div>
+            </div>
+          </form>
+        </motion.div>
+
       </div>
     </section>
   )

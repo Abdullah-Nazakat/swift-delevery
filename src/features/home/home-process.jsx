@@ -1,90 +1,144 @@
+'use client'
+import React, { useRef ,useMemo} from 'react'
 import Image from "next/image";
-// import { useTranslations } from "next-intl";
 import StepOne from "../../../public/step-1.png"
 import StepTwo from "../../../public/step-2.png"
 import StepThree from "../../../public/step-3.png"
 import StepFour from "../../../public/step-4.png"
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Line, PerspectiveCamera } from '@react-three/drei'
+import * as THREE from 'three'
 
-
-// const t = useTranslations('HomeProcess')
 
 const steps = [
     {
         id: 1,
-        title: "Place Order",
-        description:
-            "Enter package details and select your preferred delivery option",
+        title: "Initiate Order",
+        description: "Input mission parameters and payload details to commence.",
         image: StepOne,
     },
     {
         id: 2,
-        title: "Track Package",
-        description:
-            "Monitor your delivery in real-time with our GPS tracking system",
+        title: "Telemetry Tracking",
+        description: "Real-time orbital monitoring of your cargo's vector.",
         image: StepTwo,
     },
     {
         id: 3,
-        title: "Fast Delivery",
-        description: "Our professional couriers deliver your package with care",
+        title: "Rapid Transit",
+        description: "High-velocity transport via our specialized courier fleet.",
         image: StepThree,
     },
     {
         id: 4,
-        title: "Receive & Confirm",
-        description:
-            "Get your package delivered safely to your doorstep without any hassle.",
+        title: "Mission Complete",
+        description: "Secure payload delivery and digital confirmation sequence.",
         image: StepFour,
     },
 ];
 
-export default function HomeProcess() {
+const FlightPath = () => {
+    const lineRef = useRef()
+
+    // Create a more technical looking path
+    const points = useMemo(() => {
+        const p = []
+        for (let i = -10; i <= 10; i += 0.5) {
+            p.push(new THREE.Vector3(i, Math.sin(i * 0.5) * 1.5, 0))
+        }
+        return p
+    }, [])
+
     return (
-        <section className="py-12 px-4 md:px-8 bg-[#FDE047]">
-            <div className="mx-auto">
-                <div className="text-center mb-12 animate-fadeIn">
-                    <h2 className="text-3xl md:text-5xl font-bold text-[#1e293b] mb-4">
-                        A Four Step Process
-                    </h2>
-                    <p className="text-[#475569] text-lg max-w-2xl mx-auto">
-                        Comprehensive delivery solutions tailored to meet your unique
-                        requirements
-                    </p>
+        <group position={[0, 0, -5]}>
+            <Line
+                ref={lineRef}
+                points={points}
+                color="#FFFFFF"
+                lineWidth={1}
+                dashed={true}
+                dashScale={2}
+                dashSize={1}
+                gapSize={1}
+                opacity={0.3}
+                transparent
+            />
+        </group>
+    )
+}
+
+export default function HomeProcess() {
+    const containerRef = useRef(null)
+
+    return (
+        <section ref={containerRef} className="relative py-32 px-4 md:px-8 bg-[#0B0B0C] overflow-hidden">
+            {/* Background 3D Elements */}
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+                <Canvas>
+                    <PerspectiveCamera makeDefault position={[0, 0, 10]} />
+                    <FlightPath />
+                </Canvas>
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto">
+                <div className="text-center mb-20">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="inline-block border border-white/20 px-4 py-1 rounded-full mb-4 bg-white/5 backdrop-blur-md"
+                    >
+                        <span className="text-gray-400 text-xs font-mono uppercase tracking-widest">Protocol Sequence</span>
+                    </motion.div>
+
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tighter uppercase"
+                    >
+                        Operational Flow
+                    </motion.h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {steps.map((step, index) => (
-                        <div
+                        <motion.div
                             key={step.id}
-                            className="bg-[#FFFBEB] rounded-3xl p-6 shadow-xl hover:scale-105 transition-transform duration-300 relative group animate-popIn"
-                            style={{ animationDelay: `${index * 0.2}s` }}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            className="bg-zinc-900/50 border border-white/5 p-6 hover:bg-zinc-800/50 transition-colors duration-300 group"
                         >
-                            {/* Decorative Corner */}
-                            <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden rounded-tr-3xl z-0 pointer-events-none">
-                              <div
-  className="absolute top-[-10px] right-[-10px] w-20 h-20 [background:linear-gradient(135deg,#FF8904_0%,#FDC700_100%)] transform rotate-12 rounded-bl-3xl shadow-md"
-></div>
-
+                            <div className="flex justify-between items-start mb-6">
+                                <span className="text-4xl font-mono font-bold text-white/10 group-hover:text-white/30 transition-colors">
+                                    0{step.id}
+                                </span>
+                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]"></div>
                             </div>
 
-                            <div className="relative h-48 w-full mb-6 rounded-2xl overflow-hidden z-10 border-4 border-white shadow-sm">
+                            <div className="mb-6 relative h-40 w-full overflow-hidden opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0">
                                 <Image
                                     src={step.image}
                                     alt={step.title}
                                     fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                    className="object-cover"
                                 />
+                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent" />
                             </div>
 
-                            <div className="text-center relative z-10">
-                                <h3 className="text-xl font-bold text-[#1e293b] mb-3">
+                            <div className="space-y-3 border-t border-white/10 pt-4">
+                                <h3 className="text-lg font-bold text-white uppercase tracking-wider">
                                     {step.title}
                                 </h3>
-                                <p className="text-[#475569] text-sm leading-relaxed">
+                                <p className="text-gray-500 text-sm leading-relaxed font-mono">
                                     {step.description}
                                 </p>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>

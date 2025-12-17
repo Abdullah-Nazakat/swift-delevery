@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FFFAE0;
-  --foreground: #171717;
+  --background: #050505;
+  /* Deep Space Black */
+  --foreground: #FFFFFF;
+  /* Stark White */
+  --accent: #3A3A3A;
+  /* Lunar Rock Grey */
+  --primary: #FFFFFF;
+  /* Keep primary white for stark contrast */
+  --grid-color: rgba(255, 255, 255, 0.05);
 }
 
 @theme inline {
@@ -12,132 +19,83 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-poppins), sans-serif;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-.code {
-  font-family: var(--font-geist-mono), monospace;
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
-
-.image {
-  /* background-image: url(../../public/swiftdeliver.jpg); */
-  background-image: url(../../../public/swiftdeliver.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  height: 100vh;
-}
-
-.image-about {
-  /* background-image: url(../../../public/about.jpeg); */
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  height: 100vh;
+/* Technical / HUD Utilities */
+.hud-panel {
+  background: rgba(10, 10, 12, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.image-career {
-  /* background-image: url(../../../public/bg-careet.jpg); */
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Corner Markers for HUD look */
+.hud-corners::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
 }
 
-/* .image-about{
-  background-image: url(../../../public/about.jpeg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  height: 100vh;
-} */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.hud-corners::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 1s ease-out forwards;
+.tech-grid {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.text-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  letter-spacing: -0.05em;
 }
 
-.animate-slideInLeft {
-  animation: slideInLeft 0.8s ease-out forwards;
+.text-glow {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-slideInRight {
-  animation: slideInRight 0.8s ease-out forwards;
-}
-
-@keyframes popIn {
+/* Animations */
+@keyframes scanline {
   0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-
-  70% {
-    transform: scale(1.05);
+    transform: translateY(-100%);
   }
 
   100% {
-    opacity: 1;
-    transform: scale(1);
+    transform: translateY(100%);
   }
 }
 
-.animate-popIn {
-  animation: popIn 0.6s ease-out forwards;
+.animate-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05), transparent);
+  animation: scanline 4s linear infinite;
+  pointer-events: none;
 }
